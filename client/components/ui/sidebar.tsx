@@ -286,7 +286,6 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      {/* <PanelLeft /> */}
       <AlignLeft className="text-[#800080] from-35% to-[#000000]" />
 
       <span className="sr-only">Toggle Sidebar</span>

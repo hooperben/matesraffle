@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./dark-mode";
 import { usePathname } from "next/navigation";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useEffect } from "react";
 
 // Menu items.
 const items = [
@@ -38,13 +41,19 @@ const items = [
 export function AppSidebar() {
   const pathname = usePathname();
 
+  const { user } = useDynamicContext();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>RaffleHur</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="text-[#800080] dark:text-white from-35% to-[#000000]">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
@@ -60,6 +69,8 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <DynamicWidget />
+
         <ModeToggle />
       </SidebarFooter>
     </Sidebar>
