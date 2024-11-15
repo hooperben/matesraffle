@@ -127,7 +127,6 @@ const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
         "relative z-10 size-full rounded-[var(--border-radius)]",
         className,
       )}
-      {...props}
     >
       <div
         className={cn(

@@ -31,11 +31,6 @@ const items = [
     url: "/faqs",
     icon: FileQuestion,
   },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
@@ -51,9 +46,13 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>RaffleHur</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex justify-between w-full mb-4">
+            <div>Mates Raffle</div>
+            <ModeToggle />
+          </SidebarGroupLabel>
+
           <SidebarGroupContent>
-            <SidebarMenu className="text-[#800080] dark:text-white from-35% to-[#000000]">
+            <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
@@ -70,8 +69,6 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <DynamicWidget />
-
-        <ModeToggle />
       </SidebarFooter>
     </Sidebar>
   );
