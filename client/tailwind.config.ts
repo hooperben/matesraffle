@@ -76,7 +76,10 @@ const config: Config = {
   			rainbow: 'rainbow var(--speed, 2s) infinite linear',
   			orbit: 'orbit calc(var(--duration)*1s) linear infinite',
   			marquee: 'marquee var(--duration) infinite linear',
-  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+  			gradient: 'gradient 8s linear infinite',
+  			'shimmer-slide': 'shimmer-slide var(--speed) ease-in-out infinite alternate',
+  			'spin-around': 'spin-around calc(var(--speed) * 2) infinite linear'
   		},
   		keyframes: {
   			'background-position-spin': {
@@ -117,6 +120,30 @@ const config: Config = {
   				},
   				to: {
   					transform: 'translateY(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			gradient: {
+  				to: {
+  					backgroundPosition: 'var(--bg-size) 0'
+  				}
+  			},
+  			'shimmer-slide': {
+  				to: {
+  					transform: 'translate(calc(100cqw - 100%), 0)'
+  				}
+  			},
+  			'spin-around': {
+  				'0%': {
+  					transform: 'translateZ(0) rotate(0)'
+  				},
+  				'15%, 35%': {
+  					transform: 'translateZ(0) rotate(90deg)'
+  				},
+  				'65%, 85%': {
+  					transform: 'translateZ(0) rotate(270deg)'
+  				},
+  				'100%': {
+  					transform: 'translateZ(0) rotate(360deg)'
   				}
   			}
   		}

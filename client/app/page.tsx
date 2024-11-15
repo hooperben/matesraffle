@@ -11,8 +11,8 @@ export default function Home() {
           <div className="pointer-events-none z-10 h-full whitespace-pre-wrap bg-gradient-to-br from-[#800080] from-35% to-[#595959] bg-clip-text text-6xl font-bold leading-none tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
             the worlds fairest raffle machine
           </div>
-          <div className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-br from-[#800080] from-35% to-[#595959] bg-clip-text text-lg font-bold leading-normal tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
-            you can look at the code yourself
+          <div className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-br from-[#800080] from-35% to-[#595959] bg-clip-text text-md font-bold leading-normal tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+            (it&apos;s true - you can look at the code yourself)
           </div>
         </NeonGradientCard>
 

@@ -1,19 +1,19 @@
 "use client";
 
+import ShimmerButton from "@/components/ui/shimmer-button";
 import Image from "next/image";
 import OrbitingCircles from "./ui/orbiting-circles";
 import WordPullUp from "./ui/word-pull-up";
-import { RainbowButton } from "./ui/rainbow-button";
 import { motion } from "framer-motion";
 
 const Diagram = () => {
   return (
-    <div className="max-w-[400px]">
+    <div>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="relative flex h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background"
+        className="my-3 relative flex h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background"
       >
         <OrbitingCircles
           className="size-[25px] border-none bg-transparent"
@@ -44,17 +44,22 @@ const Diagram = () => {
       </motion.div>
 
       <WordPullUp
-        className="mx-5 text-2xl text-right font-bold tracking-[-0.02em] text-black dark:text-white"
-        words="Fair distributions, secured by verifiable randomness."
+        className="my-3 mx-5 text-2xl text-right font-bold tracking-[-0.02em] text-black dark:text-white"
+        words="Fair raffles, secured by verifiable randomness."
       />
 
       <motion.div
-        className="flex justify-end my-2 mr-2"
+        className="my-3 flex flex-row text-right justify-end w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
       >
-        <RainbowButton>How does it work?</RainbowButton>
+        <ShimmerButton
+          onClick={() => console.log("hello")}
+          className="flex justify-end"
+        >
+          What does this even mean?
+        </ShimmerButton>
       </motion.div>
     </div>
   );
