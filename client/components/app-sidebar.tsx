@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Home, Inbox, FileQuestion, Settings } from "lucide-react";
+import { Home, FileQuestion, Settings } from "lucide-react";
 
 import {
   Sidebar,
