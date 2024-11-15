@@ -1,4 +1,6 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+"use client";
+
+import { Calendar, Home, Inbox, FileQuestion, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -12,27 +14,30 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./dark-mode";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const items = [
   {
-    title: "My Tickets",
-    url: "#",
+    title: "Home",
+    url: "/",
     icon: Home,
   },
   {
-    title: "My Raffles",
-    url: "#",
-    icon: Inbox,
+    title: "How does it work?",
+    url: "/faqs",
+    icon: FileQuestion,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -42,7 +47,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={pathname === item.url}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

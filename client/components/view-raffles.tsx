@@ -10,7 +10,7 @@ const raffles = [{ name: "Mojito with Ben" }, { name: "Mates Ball 2024" }];
 const RaffleCard = ({ name }: { name: string }) => (
   <figure
     className={cn(
-      "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
+      "relative cursor-pointer overflow-auto rounded-xl border p-4",
       // light styles
       "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
       // dark styles
@@ -30,14 +30,14 @@ const RaffleCard = ({ name }: { name: string }) => (
 
 const ViewRaffles = () => {
   return (
-    <div className="w-[100vw] max-w-[100%]">
+    <div className="w-full max-w-[100vw]">
       <motion.div
         className=""
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3, duration: 0.5 }}
       >
-        <div className="mx-5 text-2xl text-left font-bold tracking-[-0.02em] text-black dark:text-white md:text-7xl md:leading-[5rem]">
+        <div className="mx-5 text-2xl text-left font-bold tracking-[-0.02em] text-black dark:text-white">
           Current Raffles
         </div>
       </motion.div>
@@ -55,7 +55,7 @@ const ViewRaffles = () => {
           </Marquee>
         </div>
 
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-end mr-2">
           <RainbowButton>View All Raffles</RainbowButton>
         </div>
       </motion.div>

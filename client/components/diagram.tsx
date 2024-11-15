@@ -8,8 +8,13 @@ import { motion } from "framer-motion";
 
 const Diagram = () => {
   return (
-    <div>
-      <div className="relative flex h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl">
+    <div className="max-w-[400px]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="relative flex h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background"
+      >
         <OrbitingCircles
           className="size-[25px] border-none bg-transparent"
           duration={20}
@@ -36,10 +41,10 @@ const Diagram = () => {
         >
           <Image src="/pyth.png" alt="LINK" height={35} width={35} />
         </OrbitingCircles>
-      </div>
+      </motion.div>
 
       <WordPullUp
-        className="mx-5 text-2xl text-right font-bold tracking-[-0.02em] text-black dark:text-white md:text-7xl md:leading-[5rem]"
+        className="mx-5 text-2xl text-right font-bold tracking-[-0.02em] text-black dark:text-white"
         words="Fair distributions, secured by verifiable randomness."
       />
 
