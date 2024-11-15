@@ -1,6 +1,4 @@
-# raffle
-
-Think this project will be named 'RaffleHur', but still undecided.
+# MatesRaffle
 
 The goal of this application is to be a beautiful front end, that runs raffle logic utilising verifiably random numbers.
 

@@ -9,7 +9,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "RaffleHur",
+  title: "MatesRaffle",
   description: "The most fair raffle software in the world.",
 };
 
