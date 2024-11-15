@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FileQuestion, Settings } from "lucide-react";
+import { Home, FileQuestion } from "lucide-react";
 
 import {
   Sidebar,
