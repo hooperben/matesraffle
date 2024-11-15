@@ -1,5 +1,6 @@
 import Diagram from "@/components/diagram";
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
+import ViewRaffles from "@/components/view-raffles";
 // import { RainbowButton } from "@/components/ui/rainbow-button";
 
 export default function Home() {
@@ -15,7 +16,12 @@ export default function Home() {
           </div>
         </NeonGradientCard>
       </div>
+
       <Diagram />
+
+      <div className="my-3" />
+
+      <ViewRaffles />
     </div>
   );
 }
