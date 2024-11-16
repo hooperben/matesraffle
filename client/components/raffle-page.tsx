@@ -4,6 +4,9 @@
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useRef } from "react";
+import type { ConfettiRef } from "@/components/ui/confetti";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
@@ -13,8 +16,12 @@ import {
   DynamicWidget,
   useDynamicContext,
   getAuthToken,
+  useUserWallets,
 } from "@dynamic-labs/sdk-react-core";
 import { raffles } from "@/app/constants/launch-raffles";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import confetti from "canvas-confetti";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
   const raffle = raffles[pubKey] || { errorFindingRaffle: true };
@@ -25,100 +32,202 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
 
   const { user } = useDynamicContext();
 
-  const putToBackend = async () => {
-    const dynamicJwtToken = getAuthToken();
+  const userWallets = useUserWallets();
 
-    const request = await axios.put("/api/tickets", {
-      raffle,
-      passCode,
-      dynamicJwtToken,
-    });
+  const ownerTicketsBought = (owner: string) => `
+query {
+  ticketBoughts(where: {owner: "${owner}"}) {
+    raffle
+    owner
+    amount
+  }
+}
+`;
 
-    console.log(request);
+  const handleConfetti = () => {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const randomInRange = (min: number, max: number) =>
+      Math.random() * (max - min) + min;
+
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
   };
 
+  const {
+    data: raffleDetails,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["raffleDetails", pubKey],
+    enabled: !!user && userWallets.length > 0,
+    queryFn: async () => {
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
+        {
+          query: ownerTicketsBought(userWallets[0].address),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      const data = response.data.data; // this is dumb
+      return data.ticketsBought || [];
+    },
+    refetchInterval: 60000,
+  });
+
+  const [openSuccess, setOpenSuccess] = useState(false);
+
+  const { mutateAsync: getTicketAsync, isPending: isGettingTicket } =
+    useMutation({
+      mutationFn: async () => {
+        const dynamicJwtToken = getAuthToken();
+
+        const request = await axios.put("/api/tickets", {
+          raffle,
+          passCode,
+          dynamicJwtToken,
+        });
+        console.log(request);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+      onSuccess: () => {
+        setOpenSuccess(true);
+        handleConfetti();
+      },
+    });
+
   return (
-    <div className="flex flex-col justify-start">
-      <Button
-        variant="ghost"
-        className="text-sm mb-2 font-bold w-[100px] ml-2"
-        onClick={() => router.push("/raffles")}
-      >
-        {"< "}Back to raffles
-      </Button>
-
-      {raffle.errorFindingRaffle && <div>Raffle Not Found</div>}
-      {raffle && !raffle.errorFindingRaffle && (
-        <NeonGradientCard className="w-[90vw] h-[80vh]">
-          <></>
-          <CardContent className="min-h-[55vh] p-0">
-            <div className="mb-4">
-              <strong>The Prize{raffle.prizes.length > 1 && "s"}:</strong>
-              <ul>
-                {raffle.prizes.map((prize: any, index: any) => (
-                  <li key={index}>{prize}</li>
-                ))}
-              </ul>
+    <>
+      <Dialog open={openSuccess} onOpenChange={() => setOpenSuccess(false)}>
+        <DialogContent className="flex w-full flex-col overflow-hidden rounded-lg border bg-background min-h-[300px]">
+          <div className="flex flex-col">
+            <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-6xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+              {raffle.name} Ticket Secured!
+            </span>
+            <div className="flex text-md justify-center text-center w-[100%]">
+              <p className="mt-4">
+                Keep an eye out for winner announcements shortly.
+              </p>
             </div>
-            <div className="mb-4">
-              <strong>The Rule{raffle.rules.length > 1 && "s"}:</strong>
-              <ul>
-                {raffle.rules.map((prize: any, index: any) => (
-                  <li key={index}>{prize}</li>
-                ))}
-              </ul>
-            </div>
-          </CardContent>
-          <CardFooter className="w-full p-0">
-            <div className="flex flex-col  w-full">
-              <div className="flex flex-col">
-                <strong>Get your ticket:</strong>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-                <p>You need a code to get a ticket in this raffle.</p>
+      <div className="flex flex-col justify-start">
+        <Button
+          variant="ghost"
+          className="text-sm mb-2 font-bold w-[100px] ml-2"
+          onClick={() => router.push("/raffles")}
+        >
+          {"< "}Back to raffles
+        </Button>
 
-                <Input
-                  type="text"
-                  placeholder="Pass Code"
-                  value={passCode}
-                  onChange={(e) => setPassCode(e.target.value)}
-                />
+        {raffleDetails && raffleDetails.length > 0 && (
+          <div>You&apos;ve secured your ticket.</div>
+        )}
 
-                <motion.div
-                  className="my-3 flex flex-row justify-center w-full"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2, duration: 0.5 }}
-                >
-                  {!user && <DynamicWidget />}
-                  {user && (
-                    <Button
-                      onClick={() => putToBackend()}
-                      disabled={passCode.length !== 6}
-                      className="flex justify-end"
-                    >
-                      Get a ticket
-                    </Button>
-                  )}
-                </motion.div>
+        {raffle.errorFindingRaffle && <div>Raffle Not Found</div>}
+        {raffle && !raffle.errorFindingRaffle && (
+          <NeonGradientCard className="w-[90vw] h-[80vh]">
+            <></>
+            <CardContent className="min-h-[55vh] p-0">
+              <div className="mb-4">
+                <strong>The Prize{raffle.prizes.length > 1 && "s"}:</strong>
+                <ul>
+                  {raffle.prizes.map((prize: any, index: any) => (
+                    <li key={index}>{prize}</li>
+                  ))}
+                </ul>
               </div>
-              <div className="mb-4 flex w-full justify-end">
-                <p>
-                  <span>Organised by </span>{" "}
-                  <a
-                    href={raffle.organiser.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]"
+              <div className="mb-4">
+                <strong>The Rule{raffle.rules.length > 1 && "s"}:</strong>
+                <ul>
+                  {raffle.rules.map((prize: any, index: any) => (
+                    <li key={index}>{prize}</li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+            <CardFooter className="w-full p-0">
+              <div className="flex flex-col  w-full">
+                <div className="flex flex-col">
+                  <strong>Get your ticket:</strong>
+
+                  <p>You need a code to get a ticket in this raffle.</p>
+
+                  <Input
+                    type="text"
+                    placeholder="Pass Code"
+                    value={passCode}
+                    onChange={(e) => setPassCode(e.target.value)}
+                  />
+
+                  <motion.div
+                    className="my-3 flex flex-row justify-center w-full"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2, duration: 0.5 }}
                   >
-                    {raffle.organiser.name}
-                  </a>
-                </p>
+                    {!user && <DynamicWidget />}
+                    {user && (
+                      <Button
+                        onClick={() => getTicketAsync()}
+                        disabled={passCode.length !== 6 || isGettingTicket}
+                        className="flex justify-end"
+                      >
+                        {isGettingTicket && (
+                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        Get a ticket
+                      </Button>
+                    )}
+                  </motion.div>
+                </div>
+                <div className="mb-4 flex w-full justify-end">
+                  <p>
+                    <span>Organised by </span>{" "}
+                    <a
+                      href={raffle.organiser.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]"
+                    >
+                      {raffle.organiser.name}
+                    </a>
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardFooter>
-        </NeonGradientCard>
-      )}
-    </div>
+            </CardFooter>
+          </NeonGradientCard>
+        )}
+      </div>
+    </>
   );
 };
 

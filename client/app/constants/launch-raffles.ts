@@ -23,7 +23,7 @@ export const raffles: Record<string, any> = {
   "0xc5186d960bd03ff22cf62e88e39ff901a07d3fd83bc499f945d6a031608b1dc0": {
     pubKey:
       "0xc5186d960bd03ff22cf62e88e39ff901a07d3fd83bc499f945d6a031608b1dc0",
-    name: "Luckiest Man Alive",
+    name: "Luckiest Alive",
     prizes: ["Potential Glory"],
     rules: ["This is a test"],
     thumbnail: "",
