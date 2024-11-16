@@ -17,9 +17,9 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
 
     mapping(uint256 requestId => RequestStatus requestStatus) public s_requests;
 
-    // MatesRaffle Polygon Mainnet Sub Id
+    // MatesRaffle Base Mainnet Sub Id
     uint256 public s_subscriptionId =
-        26740131510072070510759061772352496168294574078875214684151409051291147389834;
+        16957555368649562865782493065259495534450158366126501289265118670583371774576;
 
     // Past request IDs.
     uint256[] public requestIds;
@@ -27,18 +27,18 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
 
     // The gas lane to use, which specifies the maximum gas price to bump to.
     bytes32 public keyHash =
-        0x719ed7d7664abc3001c18aac8130a2265e1e70b7e036ae20f3ca8b92b3154d86; // 500 on polygon mainnet
+        0xdc2f87677b01473c763cb0aee938ed3341512f6057324a584e5944e786144d70; // 30 on base mainnet
 
     uint32 public callbackGasLimit = 30_000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 1;
 
     /**
-     * HARDCODED FOR POLYGON MAINNET
-     * COORDINATOR: 0xec0Ed46f36576541C75739E915ADbCb3DE24bD77
+     * HARDCODED FOR BASE MAINNET
+     * COORDINATOR: 0xd5D517aBE5cF79B7e95eC98dB0f0277788aFF634
      */
     constructor()
-        VRFConsumerBaseV2Plus(0xec0Ed46f36576541C75739E915ADbCb3DE24bD77)
+        VRFConsumerBaseV2Plus(0xd5D517aBE5cF79B7e95eC98dB0f0277788aFF634)
     {}
 
     // Assumes the subscription is funded sufficiently.
