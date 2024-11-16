@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { CardContent, CardFooter } from "@/components/ui/card";
+import { CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -22,6 +22,7 @@ import { raffles } from "@/app/constants/launch-raffles";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import confetti from "canvas-confetti";
+import { Skeleton } from "./ui/skeleton";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
   const raffle = raffles[pubKey] || { errorFindingRaffle: true };
@@ -73,11 +74,7 @@ query {
     }, 250);
   };
 
-  const {
-    data: raffleDetails,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: ticketsBought, isLoading: isLoadingTicketStatus } = useQuery({
     queryKey: ["raffleDetails", pubKey],
     enabled: !!user && userWallets.length > 0,
     queryFn: async () => {
@@ -94,16 +91,21 @@ query {
       );
 
       const data = response.data.data; // this is dumb
-      return data.ticketsBought || [];
+      return (
+        data.ticketBoughts.filter((raffle: any) => raffle.pubKey === pubKey) ||
+        []
+      );
     },
     refetchInterval: 60000,
   });
 
   const [openSuccess, setOpenSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const { mutateAsync: getTicketAsync, isPending: isGettingTicket } =
     useMutation({
       mutationFn: async () => {
+        setErrorMessage(undefined);
         const dynamicJwtToken = getAuthToken();
 
         const request = await axios.put("/api/tickets", {
@@ -113,8 +115,9 @@ query {
         });
         console.log(request);
       },
-      onError: (err) => {
-        console.log(err);
+      onError: (err: any) => {
+        console.log(err.response.data);
+        setErrorMessage(err.response.data.message ?? "Something went wrong");
       },
       onSuccess: () => {
         setOpenSuccess(true);
@@ -148,14 +151,10 @@ query {
           {"< "}Back to raffles
         </Button>
 
-        {raffleDetails && raffleDetails.length > 0 && (
-          <div>You&apos;ve secured your ticket.</div>
-        )}
-
         {raffle.errorFindingRaffle && <div>Raffle Not Found</div>}
         {raffle && !raffle.errorFindingRaffle && (
           <NeonGradientCard className="w-[90vw] h-[80vh]">
-            <></>
+            <CardTitle></CardTitle>
             <CardContent className="min-h-[55vh] p-0">
               <div className="mb-4">
                 <strong>The Prize{raffle.prizes.length > 1 && "s"}:</strong>
@@ -176,39 +175,65 @@ query {
             </CardContent>
             <CardFooter className="w-full p-0">
               <div className="flex flex-col  w-full">
-                <div className="flex flex-col">
-                  <strong>Get your ticket:</strong>
+                {isLoadingTicketStatus && (
+                  <Skeleton className="h-[20px] w-[200px]" />
+                )}
 
-                  <p>You need a code to get a ticket in this raffle.</p>
+                <div className="min-h-[150px]">
+                  {ticketsBought && ticketsBought.length > 0 ? (
+                    <div className="text-2xl">
+                      ✅ You&apos;ve secured your ticket.
+                    </div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 3, duration: 0.5 }}
+                      className="flex flex-col"
+                    >
+                      <strong>Get your ticket:</strong>
 
-                  <Input
-                    type="text"
-                    placeholder="Pass Code"
-                    value={passCode}
-                    onChange={(e) => setPassCode(e.target.value)}
-                  />
+                      <p>You need a code to get a ticket in this raffle.</p>
 
-                  <motion.div
-                    className="my-3 flex flex-row justify-center w-full"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2, duration: 0.5 }}
-                  >
-                    {!user && <DynamicWidget />}
-                    {user && (
-                      <Button
-                        onClick={() => getTicketAsync()}
-                        disabled={passCode.length !== 6 || isGettingTicket}
-                        className="flex justify-end"
+                      <Input
+                        type="text"
+                        placeholder="Pass Code"
+                        value={passCode}
+                        onChange={(e) => setPassCode(e.target.value)}
+                      />
+
+                      <motion.div
+                        className="my-3 flex flex-col text-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2, duration: 0.5 }}
                       >
-                        {isGettingTicket && (
-                          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                        {!user ? (
+                          <DynamicWidget />
+                        ) : (
+                          <Button
+                            onClick={() => getTicketAsync()}
+                            disabled={
+                              passCode.length !== 6 ||
+                              isGettingTicket ||
+                              openSuccess
+                            }
+                            className="flex"
+                          >
+                            {isGettingTicket && (
+                              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            Get my ticket
+                          </Button>
                         )}
-                        Get a ticket
-                      </Button>
-                    )}
-                  </motion.div>
+                        <div className="text-red-500 text-sm text-center my-2">
+                          {errorMessage && errorMessage}
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
                 </div>
+
                 <div className="mb-4 flex w-full justify-end">
                   <p>
                     <span>Organised by </span>{" "}

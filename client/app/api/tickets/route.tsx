@@ -6,6 +6,7 @@ import { base } from "viem/chains";
 import { http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import MatesRaffleABI from "../../../MatesRaffleABI.json";
+import MatesRaffle from "../../../MatesRaffle.json";
 
 import {
   toUtf8Bytes,
@@ -15,29 +16,32 @@ import {
   Wallet,
 } from "ethers";
 import { verifyAuth } from "@/app/helpers/verify-auth";
+import { raffles } from "@/app/constants/launch-raffles";
 
 export async function PUT(request: Request) {
-  const { dynamicJwtToken } = await request.json();
+  const { dynamicJwtToken, raffle, passCode } = await request.json();
+
+  console.log(raffle);
 
   const userFromToken = await verifyAuth(dynamicJwtToken);
-
   const address = userFromToken.verified_credentials[0].address;
+  const activeRaffle = raffles[raffle.pubKey];
 
-  console.log(address);
+  if (!activeRaffle) {
+    return NextResponse.json({ message: "no raffle found" }, { status: 400 });
+  }
 
-  return NextResponse.json({ message: "hello" }, { status: 200 });
-}
+  if (activeRaffle.accessCode !== passCode) {
+    return NextResponse.json(
+      { message: "Invalid code sorry :(" },
+      { status: 400 },
+    );
+  }
 
-export async function POST(request: Request) {
   try {
     const provider = new JsonRpcProvider(process.env.BASE_MAINNET_RPC_URL!);
     const signer = new Wallet(process.env.PRIVATE_KEY!, provider);
-
-    const contract = new Contract(
-      "0x1656725E557137cFB077DA7F4602fd3d27024edC",
-      MatesRaffleABI,
-      signer,
-    );
+    const contract = new Contract(MatesRaffle.address, MatesRaffleABI, signer);
     const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY!}`);
 
     // this is not unique key, just what biconomy had
@@ -51,17 +55,21 @@ export async function POST(request: Request) {
       bundlerTransport: http(bundlerUrl),
     });
     const smartAccountAddress = await nexusClient.account.address;
-
     console.log(smartAccountAddress);
 
-    const secret = toUtf8Bytes("12412123412"); // TODO make dynamic
-    const publicRoundId = keccak256(secret);
+    const ticketHolder: `0x${string}` = address;
 
-    const ticketHolder: `0x${string}` =
-      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+    const balance = await contract.balanceOf(address, raffle.pubKey);
+
+    if (balance != BigInt(0)) {
+      return NextResponse.json(
+        { message: "Already have a ticket!" },
+        { status: 400 },
+      );
+    }
 
     const txDetails = await contract.buyTickets.populateTransaction(
-      publicRoundId,
+      raffle.pubKey,
       ticketHolder,
       1,
     );
@@ -71,14 +79,10 @@ export async function POST(request: Request) {
       data: txDetails.data as `0x${string}`,
     };
 
-    console.log(tx);
-
     const hash = await nexusClient.sendTransaction({
       calls: [tx],
     });
     const receipt = await nexusClient.waitForTransactionReceipt({ hash });
-
-    console.log(receipt);
 
     return NextResponse.json(
       { hash: receipt.transactionHash },
@@ -87,7 +91,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.log(error);
     return NextResponse.json(
-      { error: "Invalid request body" },
+      { error: "Something went wrong getting your ticket" },
       { status: 400 },
     );
   }
