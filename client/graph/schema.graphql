@@ -1,3 +1,13 @@
+type ApprovalForAll @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  operator: Bytes! # address
+  approved: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
 type CoordinatorSet @entity(immutable: true) {
   id: Bytes!
   vrfCoordinator: Bytes! # address
@@ -17,6 +27,15 @@ type MR_ChainLinkRequest @entity(immutable: true) {
 type MR_PythRequest @entity(immutable: true) {
   id: Bytes!
   _pythRequestId: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MR_RaffleCreated @entity(immutable: true) {
+  id: Bytes!
+  pubKey: Bytes! # bytes32
+  manager: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -58,6 +77,15 @@ type PythRequested @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type RandomNessReveal @entity(immutable: true) {
+  id: Bytes!
+  rafflePubKey: Bytes! # bytes32
+  _finalRandom: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
 type RequestFulfilled @entity(immutable: true) {
   id: Bytes!
   requestId: BigInt! # uint256
@@ -71,6 +99,49 @@ type RequestSent @entity(immutable: true) {
   id: Bytes!
   requestId: BigInt! # uint256
   numWords: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TicketBought @entity(immutable: true) {
+  id: Bytes!
+  raffle: Bytes! # bytes32
+  owner: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferBatch @entity(immutable: true) {
+  id: Bytes!
+  operator: Bytes! # address
+  from: Bytes! # address
+  to: Bytes! # address
+  ids: [BigInt!]! # uint256[]
+  values: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferSingle @entity(immutable: true) {
+  id: Bytes!
+  operator: Bytes! # address
+  from: Bytes! # address
+  to: Bytes! # address
+  MatesRaffle_id: BigInt! # uint256
+  value: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type URI @entity(immutable: true) {
+  id: Bytes!
+  value: String! # string
+  MatesRaffle_id: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

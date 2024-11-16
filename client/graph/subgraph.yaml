@@ -16,25 +16,36 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
+        - ApprovalForAll
         - CoordinatorSet
         - MR_ChainLinkRequest
         - MR_PythRequest
+        - MR_RaffleCreated
         - OwnershipTransferRequested
         - OwnershipTransferred
         - PythReceived
         - PythRequested
+        - RandomNessReveal
         - RequestFulfilled
         - RequestSent
+        - TicketBought
+        - TransferBatch
+        - TransferSingle
+        - URI
       abis:
         - name: MatesRaffle
           file: ./abis/MatesRaffle.json
       eventHandlers:
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
         - event: CoordinatorSet(address)
           handler: handleCoordinatorSet
         - event: MR_ChainLinkRequest(indexed uint256)
           handler: handleMR_ChainLinkRequest
         - event: MR_PythRequest(indexed uint64)
           handler: handleMR_PythRequest
+        - event: MR_RaffleCreated(indexed bytes32,indexed address)
+          handler: handleMR_RaffleCreated
         - event: OwnershipTransferRequested(indexed address,indexed address)
           handler: handleOwnershipTransferRequested
         - event: OwnershipTransferred(indexed address,indexed address)
@@ -43,8 +54,18 @@ dataSources:
           handler: handlePythReceived
         - event: PythRequested(indexed uint64)
           handler: handlePythRequested
+        - event: RandomNessReveal(indexed bytes32,indexed uint256)
+          handler: handleRandomNessReveal
         - event: RequestFulfilled(uint256,uint256[])
           handler: handleRequestFulfilled
         - event: RequestSent(uint256,uint32)
           handler: handleRequestSent
+        - event: TicketBought(indexed bytes32,indexed address,uint256)
+          handler: handleTicketBought
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
       file: ./src/mates-raffle.ts
