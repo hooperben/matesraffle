@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FileQuestion, Github } from "lucide-react";
+import { Home, FileQuestion, Ticket, Github } from "lucide-react";
 
 import {
   Sidebar,
@@ -31,6 +31,11 @@ const items = [
     title: "How does it work?",
     url: "/faqs",
     icon: FileQuestion,
+  },
+  {
+    title: "Raffles",
+    url: "/raffles",
+    icon: Ticket,
   },
 ];
 
