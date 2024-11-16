@@ -24,3 +24,10 @@ I really want to build this into a pretty site, where both:
 - Ticket holders can view all of their tickets
 
 As well as making it a super schmick UI, with abstracted accounts that are utilising public computer networks.
+
+### Relevant Links
+
+- https://www.dynamic.xyz/
+- https://chain.link/
+- https://chroniclelabs.org/
+- https://www.pyth.network/
