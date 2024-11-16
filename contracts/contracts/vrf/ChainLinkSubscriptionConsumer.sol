@@ -30,7 +30,7 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
     bytes32 public keyHash =
         0xdc2f87677b01473c763cb0aee938ed3341512f6057324a584e5944e786144d70; // 30 on base mainnet
 
-    uint32 public callbackGasLimit = 30_000;
+    uint32 public callbackGasLimit = 100_000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 1;
 
