@@ -5,10 +5,13 @@ import Image from "next/image";
 import OrbitingCircles from "./ui/orbiting-circles";
 import WordPullUp from "./ui/word-pull-up";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Diagram = () => {
+  const router = useRouter();
+
   return (
-    <div className="text-left max-w-[300px] m-1 h-full">
+    <div className="flex flex-col justify-center max-w-[400px] m-1 h-full">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -44,18 +47,18 @@ const Diagram = () => {
       </motion.div>
 
       <WordPullUp
-        className="my-3 mx-5 text-2xl text-right font-bold tracking-[-0.02em] text-black dark:text-white"
+        className="my-3 mx-5 text-2xl font-bold tracking-[-0.02em] text-black dark:text-white"
         words="Fair raffles, secured by verifiable randomness."
       />
 
       <motion.div
-        className="my-3 flex flex-row text-right justify-end w-full"
+        className="my-3 flex flex-row justify-center w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
       >
         <ShimmerButton
-          onClick={() => console.log("hello")}
+          onClick={() => router.push("/faqs")}
           className="flex justify-end"
         >
           What does this even mean?
