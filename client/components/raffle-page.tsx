@@ -14,8 +14,11 @@ import {
   useDynamicContext,
   getAuthToken,
 } from "@dynamic-labs/sdk-react-core";
+import { raffles } from "@/app/constants/launch-raffles";
 
-const RafflePage = ({ raffle }: { raffle: any }) => {
+const RafflePage = ({ pubKey }: { pubKey: string }) => {
+  const raffle = raffles[pubKey] || { errorFindingRaffle: true };
+
   const router = useRouter();
 
   const [passCode, setPassCode] = useState("");
@@ -43,73 +46,78 @@ const RafflePage = ({ raffle }: { raffle: any }) => {
       >
         {"< "}Back to raffles
       </Button>
-      <NeonGradientCard className="w-[90vw] h-[80vh]">
-        <CardContent className="min-h-[55vh] p-0">
-          <div className="mb-4">
-            <strong>The Prize{raffle.prizes.length > 1 && "s"}:</strong>
-            <ul>
-              {raffle.prizes.map((prize: any, index: any) => (
-                <li key={index}>{prize}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="mb-4">
-            <strong>The Rule{raffle.rules.length > 1 && "s"}:</strong>
-            <ul>
-              {raffle.rules.map((prize: any, index: any) => (
-                <li key={index}>{prize}</li>
-              ))}
-            </ul>
-          </div>
-        </CardContent>
-        <CardFooter className="w-full p-0">
-          <div className="flex flex-col  w-full">
-            <div className="flex flex-col">
-              <strong>Get your ticket:</strong>
 
-              <p>You need a code to get a ticket in this raffle.</p>
-
-              <Input
-                type="text"
-                placeholder="Pass Code"
-                value={passCode}
-                onChange={(e) => setPassCode(e.target.value)}
-              />
-
-              <motion.div
-                className="my-3 flex flex-row justify-center w-full"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2, duration: 0.5 }}
-              >
-                {!user && <DynamicWidget />}
-                {user && (
-                  <Button
-                    onClick={() => putToBackend()}
-                    disabled={passCode.length !== 6}
-                    className="flex justify-end"
-                  >
-                    Get a ticket
-                  </Button>
-                )}
-              </motion.div>
+      {raffle.errorFindingRaffle && <div>Raffle Not Found</div>}
+      {raffle && !raffle.errorFindingRaffle && (
+        <NeonGradientCard className="w-[90vw] h-[80vh]">
+          <></>
+          <CardContent className="min-h-[55vh] p-0">
+            <div className="mb-4">
+              <strong>The Prize{raffle.prizes.length > 1 && "s"}:</strong>
+              <ul>
+                {raffle.prizes.map((prize: any, index: any) => (
+                  <li key={index}>{prize}</li>
+                ))}
+              </ul>
             </div>
-            <div className="mb-4 flex w-full justify-end">
-              <p>
-                <span>Organised by </span>{" "}
-                <a
-                  href={raffle.organiser.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]"
+            <div className="mb-4">
+              <strong>The Rule{raffle.rules.length > 1 && "s"}:</strong>
+              <ul>
+                {raffle.rules.map((prize: any, index: any) => (
+                  <li key={index}>{prize}</li>
+                ))}
+              </ul>
+            </div>
+          </CardContent>
+          <CardFooter className="w-full p-0">
+            <div className="flex flex-col  w-full">
+              <div className="flex flex-col">
+                <strong>Get your ticket:</strong>
+
+                <p>You need a code to get a ticket in this raffle.</p>
+
+                <Input
+                  type="text"
+                  placeholder="Pass Code"
+                  value={passCode}
+                  onChange={(e) => setPassCode(e.target.value)}
+                />
+
+                <motion.div
+                  className="my-3 flex flex-row justify-center w-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2, duration: 0.5 }}
                 >
-                  {raffle.organiser.name}
-                </a>
-              </p>
+                  {!user && <DynamicWidget />}
+                  {user && (
+                    <Button
+                      onClick={() => putToBackend()}
+                      disabled={passCode.length !== 6}
+                      className="flex justify-end"
+                    >
+                      Get a ticket
+                    </Button>
+                  )}
+                </motion.div>
+              </div>
+              <div className="mb-4 flex w-full justify-end">
+                <p>
+                  <span>Organised by </span>{" "}
+                  <a
+                    href={raffle.organiser.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]"
+                  >
+                    {raffle.organiser.name}
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-        </CardFooter>
-      </NeonGradientCard>
+          </CardFooter>
+        </NeonGradientCard>
+      )}
     </div>
   );
 };

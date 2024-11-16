@@ -40,12 +40,11 @@ export default async function Page({
   await getRaffleDetails();
 
   const raffle = raffles[pubKey];
-
   return (
     <div className="flex flex-col m-5">
       <div className="text-5xl font-bold mb-2">{raffle.name}</div>
 
-      <RafflePage raffle={raffle} />
+      <RafflePage pubKey={pubKey} />
     </div>
   );
 }

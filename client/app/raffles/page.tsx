@@ -51,7 +51,7 @@ export default async function Home() {
       )}
 
       {formattedRaffles.map((raffle: any) => (
-        <RaffleCard key={raffle.id} raffle={raffle} />
+        <RaffleCard key={raffle.pubKey} pubKey={raffle.pubKey} />
       ))}
     </div>
   );

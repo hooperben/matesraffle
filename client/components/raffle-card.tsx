@@ -4,8 +4,11 @@
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { NeonGradientCard } from "./ui/neon-gradient-card";
+import { raffles } from "@/app/constants/launch-raffles";
 
-const RaffleCard = ({ raffle }: { raffle: any }) => {
+const RaffleCard = ({ pubKey }: { pubKey: string }) => {
+  const raffle = raffles[pubKey] || { errorFindingRaffle: true };
+
   const router = useRouter();
 
   return (

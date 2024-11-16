@@ -14,8 +14,6 @@ export const metadata: Metadata = {
   description: "The fairest raffle software in the world.",
 };
 
-const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,22 +28,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <QueryClientProvider client={queryClient}>
-            <DynamicContextProvider
-              settings={{
-                environmentId: "d6294e7a-dc6e-4379-af32-d4ccde0d212f",
-                walletConnectors: [EthereumWalletConnectors],
-              }}
-            >
-              <SidebarProvider>
-                <AppSidebar />
-                <main>
-                  <SidebarTrigger />
-                  {children}
-                </main>
-              </SidebarProvider>
-            </DynamicContextProvider>
-          </QueryClientProvider>
+          <DynamicContextProvider
+            settings={{
+              environmentId: "d6294e7a-dc6e-4379-af32-d4ccde0d212f",
+              walletConnectors: [EthereumWalletConnectors],
+            }}
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <main>
+                <SidebarTrigger />
+                {children}
+              </main>
+            </SidebarProvider>
+          </DynamicContextProvider>
         </ThemeProvider>
       </body>
     </html>
