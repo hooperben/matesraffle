@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JwksClient } from "jwks-rsa";
 
@@ -12,7 +13,7 @@ const client = new JwksClient({
   cacheMaxAge: 600000, // Cache duration in milliseconds (10 minutes in this case))}
 });
 
-export const verifyAuth = async (encodedJwt: string) => {
+export const verifyAuth = async (encodedJwt: string): Promise<any> => {
   const signingKey = await client.getSigningKey();
   const publicKey = signingKey.getPublicKey();
 
@@ -20,11 +21,8 @@ export const verifyAuth = async (encodedJwt: string) => {
     ignoreExpiration: false,
   }) as JwtPayload;
 
-  if (decodedToken.scopes.includes("requiresAdditionalAuth")) {
-    // Either reject or handle the scopes appropriately.
-    // `requiresAdditionalAuth` is the scope used to indicate that JWT requires additional verification such as MFA.
-    throw new Error("Additional verification required");
-  }
+  console.log("decoded user:");
+  console.log(decodedToken);
 
-  console.log(decodedToken); // { iss: 'xxxx', exp: nnnn, ... }
+  return decodedToken;
 };

@@ -14,6 +14,19 @@ import {
   Contract,
   Wallet,
 } from "ethers";
+import { verifyAuth } from "@/app/helpers/verify-auth";
+
+export async function PUT(request: Request) {
+  const { dynamicJwtToken } = await request.json();
+
+  const userFromToken = await verifyAuth(dynamicJwtToken);
+
+  const address = userFromToken.verified_credentials[0].address;
+
+  console.log(address);
+
+  return NextResponse.json({ message: "hello" }, { status: 200 });
+}
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +38,6 @@ export async function POST(request: Request) {
       MatesRaffleABI,
       signer,
     );
-
     const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY!}`);
 
     // this is not unique key, just what biconomy had

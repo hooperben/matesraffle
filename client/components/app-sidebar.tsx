@@ -16,8 +16,6 @@ import {
 import { ModeToggle } from "./dark-mode";
 import { usePathname } from "next/navigation";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
-import { useEffect } from "react";
 import { Button } from "./ui/button";
 
 // Menu items.
@@ -41,12 +39,6 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-
-  const { user } = useDynamicContext();
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <Sidebar>

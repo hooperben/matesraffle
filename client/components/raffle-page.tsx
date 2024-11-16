@@ -8,11 +8,31 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import axios from "axios";
+import {
+  DynamicWidget,
+  useDynamicContext,
+  getAuthToken,
+} from "@dynamic-labs/sdk-react-core";
 
 const RafflePage = ({ raffle }: { raffle: any }) => {
   const router = useRouter();
 
   const [passCode, setPassCode] = useState("");
+
+  const { user } = useDynamicContext();
+
+  const putToBackend = async () => {
+    const dynamicJwtToken = getAuthToken();
+
+    const request = await axios.put("/api/tickets", {
+      raffle,
+      passCode,
+      dynamicJwtToken,
+    });
+
+    console.log(request);
+  };
 
   return (
     <div className="flex flex-col justify-start">
@@ -47,25 +67,31 @@ const RafflePage = ({ raffle }: { raffle: any }) => {
             <div className="flex flex-col">
               <strong>Get your ticket:</strong>
 
+              <p>You need a code to get a ticket in this raffle.</p>
+
               <Input
                 type="text"
                 placeholder="Pass Code"
                 value={passCode}
                 onChange={(e) => setPassCode(e.target.value)}
               />
+
               <motion.div
                 className="my-3 flex flex-row justify-center w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 0.5 }}
               >
-                <Button
-                  onClick={() => console.log("getting ticket")}
-                  disabled={passCode.length !== 6}
-                  className="flex justify-end"
-                >
-                  Get a ticket
-                </Button>
+                {!user && <DynamicWidget />}
+                {user && (
+                  <Button
+                    onClick={() => putToBackend()}
+                    disabled={passCode.length !== 6}
+                    className="flex justify-end"
+                  >
+                    Get a ticket
+                  </Button>
+                )}
               </motion.div>
             </div>
             <div className="mb-4 flex w-full justify-end">

@@ -17,14 +17,14 @@ export default async function Page({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const slug = (await params).id;
+  const pubKey = (await params).id;
 
   async function getRaffleDetails() {
     console.log(process.env.NEXT_PUBLIC_SUBGRAPH_URL);
     const response = await axios.post(
       process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
       {
-        query: raffleDataQuery(slug.toString()),
+        query: raffleDataQuery(pubKey.toString()),
       },
       {
         headers: {
@@ -54,7 +54,7 @@ export default async function Page({
     },
   };
 
-  const raffle = mojitoRaffleFund;
+  const raffle = { pubKey, ...mojitoRaffleFund };
 
   return (
     <div className="flex flex-col m-5">
