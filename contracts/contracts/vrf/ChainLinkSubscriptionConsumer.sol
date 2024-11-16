@@ -15,7 +15,8 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
         uint256[] randomWords;
     }
 
-    mapping(uint256 requestId => RequestStatus requestStatus) public s_requests;
+    mapping(uint256 requestId => RequestStatus requestStatus)
+        public chainLinkRequests;
 
     // MatesRaffle Base Mainnet Sub Id
     uint256 public s_subscriptionId =
@@ -62,7 +63,7 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
                 )
             })
         );
-        s_requests[requestId] = RequestStatus({
+        chainLinkRequests[requestId] = RequestStatus({
             randomWords: new uint256[](0),
             exists: true,
             fulfilled: false
@@ -77,17 +78,17 @@ contract ChainLinkSubscriptionConsumer is VRFConsumerBaseV2Plus {
         uint256 _requestId,
         uint256[] calldata _randomWords
     ) internal override {
-        require(s_requests[_requestId].exists, "request not found");
-        s_requests[_requestId].fulfilled = true;
-        s_requests[_requestId].randomWords = _randomWords;
+        require(chainLinkRequests[_requestId].exists, "request not found");
+        chainLinkRequests[_requestId].fulfilled = true;
+        chainLinkRequests[_requestId].randomWords = _randomWords;
         emit RequestFulfilled(_requestId, _randomWords);
     }
 
     function getRequestStatus(
         uint256 _requestId
     ) external view returns (bool fulfilled, uint256[] memory randomWords) {
-        require(s_requests[_requestId].exists, "request not found");
-        RequestStatus memory request = s_requests[_requestId];
+        require(chainLinkRequests[_requestId].exists, "request not found");
+        RequestStatus memory request = chainLinkRequests[_requestId];
         return (request.fulfilled, request.randomWords);
     }
 }
