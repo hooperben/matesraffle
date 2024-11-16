@@ -3,12 +3,13 @@
 
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { NeonGradientCard } from "./ui/neon-gradient-card";
 
 const RaffleCard = ({ raffle }: { raffle: any }) => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col">
+    <NeonGradientCard className="w-[90vw] h-[10vh]">
       <div>{raffle.id}</div>
 
       <div>{raffle.pubKey}</div>
@@ -17,7 +18,7 @@ const RaffleCard = ({ raffle }: { raffle: any }) => {
       <Button onClick={() => router.push(`/raffles/${raffle.id}`)}>
         Have a Look
       </Button>
-    </div>
+    </NeonGradientCard>
   );
 };
 
