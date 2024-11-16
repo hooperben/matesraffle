@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 const Diagram = () => {
   return (
-    <div>
+    <div className="text-left max-w-[300px] m-1 h-full">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

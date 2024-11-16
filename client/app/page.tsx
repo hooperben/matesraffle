@@ -5,7 +5,7 @@ import ViewRaffles from "@/components/view-raffles";
 export default function Home() {
   return (
     <div>
-      <div className="flex flex-col justify-between md:flex-row m-5">
+      <div className="flex flex-col md:flex-row justify-between m-5">
         <Banner />
         <Diagram />
       </div>
