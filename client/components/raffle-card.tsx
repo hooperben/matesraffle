@@ -9,15 +9,16 @@ const RaffleCard = ({ raffle }: { raffle: any }) => {
   const router = useRouter();
 
   return (
-    <NeonGradientCard className="w-[90vw] h-[10vh]">
-      <div>{raffle.id}</div>
-
-      <div>{raffle.pubKey}</div>
-      <div>{raffle.timestamp}</div>
-
-      <Button onClick={() => router.push(`/raffles/${raffle.pubKey}`)}>
-        Have a Look
-      </Button>
+    <NeonGradientCard className="w-[90vw] h-[14vh] my-2">
+      <div className="flex justify-between w-full">
+        <div className="flex flex-col">
+          <div className="text-xl">{raffle.name}</div>
+          <div className="text-sm">Organised by {raffle.organiser.name}</div>
+        </div>
+        <Button onClick={() => router.push(`/raffles/${raffle.pubKey}`)}>
+          Browse Raffle
+        </Button>
+      </div>
     </NeonGradientCard>
   );
 };
