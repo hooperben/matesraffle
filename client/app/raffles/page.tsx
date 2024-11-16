@@ -2,9 +2,6 @@
 import RaffleCard from "@/components/raffle-card";
 import axios from "axios";
 
-const SUBGRAPH_URL =
-  "https://api.studio.thegraph.com/query/95008/matesraffle/version/latest";
-
 const pythReceivedsQuery = `
   query {
     mrRaffleCreateds(orderBy: blockTimestamp) {
@@ -17,7 +14,7 @@ const pythReceivedsQuery = `
 
 async function getRaffles() {
   const response = await axios.post(
-    SUBGRAPH_URL,
+    process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
     {
       query: pythReceivedsQuery,
     },

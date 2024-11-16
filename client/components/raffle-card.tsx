@@ -15,7 +15,7 @@ const RaffleCard = ({ raffle }: { raffle: any }) => {
       <div>{raffle.pubKey}</div>
       <div>{raffle.timestamp}</div>
 
-      <Button onClick={() => router.push(`/raffles/${raffle.id}`)}>
+      <Button onClick={() => router.push(`/raffles/${raffle.pubKey}`)}>
         Have a Look
       </Button>
     </NeonGradientCard>
