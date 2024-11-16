@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FileQuestion } from "lucide-react";
+import { Home, FileQuestion, Github } from "lucide-react";
 
 import {
   Sidebar,
@@ -18,6 +18,7 @@ import { usePathname } from "next/navigation";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useEffect } from "react";
+import { Button } from "./ui/button";
 
 // Menu items.
 const items = [
@@ -47,7 +48,9 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex justify-between w-full mb-4">
-            <div>Mates Raffle</div>
+            <div className="text-xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
+              matesraffle.com
+            </div>
             <ModeToggle />
           </SidebarGroupLabel>
 
@@ -68,7 +71,22 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <DynamicWidget />
+        <div className="flex flex-row align-middle justify-between items-center">
+          <DynamicWidget />
+          <Button
+            variant="ghost"
+            className="text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]"
+            size="icon"
+          >
+            <a
+              href="https://github.com/hooperben/raffle"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github />
+            </a>
+          </Button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
