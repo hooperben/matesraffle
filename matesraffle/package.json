@@ -1,0 +1,18 @@
+{
+  "name": "matesraffle",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ matesraffle",
+    "create-local": "graph create --node http://localhost:8020/ matesraffle",
+    "remove-local": "graph remove --node http://localhost:8020/ matesraffle",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 matesraffle",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.89.0",
+    "@graphprotocol/graph-ts": "0.32.0"
+  },
+  "devDependencies": { "matchstick-as": "0.5.0" }
+}

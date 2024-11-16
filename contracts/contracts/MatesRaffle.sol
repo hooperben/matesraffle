@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GNU
-pragma solidity ^0.8.27;
+pragma solidity 0.8.27;
 
 import "./vrf/ChainLinkSubscriptionConsumer.sol";
 import "./vrf/PythSubscriptionConsumer.sol";

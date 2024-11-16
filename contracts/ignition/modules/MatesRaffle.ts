@@ -3,6 +3,8 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
+// npx hardhat ignition deploy ignition/modules/MatesRaffle.ts --network base
+
 const MatesRaffleModule = buildModule("MatesRaffleModule", (m) => {
   const MatesRaffle = m.contract("MatesRaffle", []);
 

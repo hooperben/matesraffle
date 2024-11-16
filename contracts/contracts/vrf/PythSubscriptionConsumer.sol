@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // An example of a consumer contract that relies on a subscription for funding.
-pragma solidity ^0.8.27;
+pragma solidity 0.8.27;
 
 import {IEntropyConsumer} from "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
 import {IEntropy} from "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";

@@ -7,6 +7,9 @@ async function main() {
 
   console.log("Signer address:", signer.address);
   console.log("Balance: ", ethers.formatEther(balance), " ETH");
+
+  const amount = ethers.parseEther("0.01");
+  console.log(amount.toString());
 }
 
 main().catch((error) => {

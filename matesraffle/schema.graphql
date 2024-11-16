@@ -1,0 +1,77 @@
+type CoordinatorSet @entity(immutable: true) {
+  id: Bytes!
+  vrfCoordinator: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MR_ChainLinkRequest @entity(immutable: true) {
+  id: Bytes!
+  _chainLinkRandomRequestId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MR_PythRequest @entity(immutable: true) {
+  id: Bytes!
+  _pythRequestId: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferRequested @entity(immutable: true) {
+  id: Bytes!
+  from: Bytes! # address
+  to: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  from: Bytes! # address
+  to: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PythReceived @entity(immutable: true) {
+  id: Bytes!
+  requestId: BigInt! # uint64
+  randomValue: BigInt! # uint256
+  provider: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PythRequested @entity(immutable: true) {
+  id: Bytes!
+  requestId: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RequestFulfilled @entity(immutable: true) {
+  id: Bytes!
+  requestId: BigInt! # uint256
+  randomWords: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RequestSent @entity(immutable: true) {
+  id: Bytes!
+  requestId: BigInt! # uint256
+  numWords: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

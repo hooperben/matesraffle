@@ -23,7 +23,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     base: {
-      url: `https://api.developer.coinbase.com/rpc/v1/base/${process.env.COINBASE_API_KEY}`,
+      url: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       accounts: [process.env.PRIVATE_KEY!],
     },
   },
