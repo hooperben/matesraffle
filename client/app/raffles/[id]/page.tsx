@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { raffles } from "@/app/constants/launch-raffles";
 import RafflePage from "@/components/raffle-page";
 import axios from "axios";
 
@@ -20,7 +21,6 @@ export default async function Page({
   const pubKey = (await params).id;
 
   async function getRaffleDetails() {
-    console.log(process.env.NEXT_PUBLIC_SUBGRAPH_URL);
     const response = await axios.post(
       process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
       {
@@ -39,22 +39,7 @@ export default async function Page({
 
   await getRaffleDetails();
 
-  const mojitoRaffleFund = {
-    name: "Mojito Lottery",
-    prizes: ["1 Mojito"],
-    rules: [
-      "1 ticket per person",
-      "Winner is emailed by organiser",
-      "Raffle is Code Protected",
-    ],
-    thumbnail: "",
-    organiser: {
-      name: "Ben",
-      twitter: "https://x.com/0xbenhooper",
-    },
-  };
-
-  const raffle = { pubKey, ...mojitoRaffleFund };
+  const raffle = raffles[pubKey];
 
   return (
     <div className="flex flex-col m-5">

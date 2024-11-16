@@ -31,3 +31,7 @@ As well as making it a super schmick UI, with abstracted accounts that are utili
 - https://chain.link/
 - https://chroniclelabs.org/
 - https://www.pyth.network/
+
+### Testing Raffle Pub Keys
+
+0xf67c0fecd26402b98db7cadc1ab9f95107464100f3957f318a933637f5ebebbc
