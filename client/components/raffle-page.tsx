@@ -5,8 +5,6 @@ import { CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useRef } from "react";
-import type { ConfettiRef } from "@/components/ui/confetti";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
@@ -153,7 +151,7 @@ query {
 
         {raffle.errorFindingRaffle && <div>Raffle Not Found</div>}
         {raffle && !raffle.errorFindingRaffle && (
-          <NeonGradientCard className="w-[90vw] h-[80vh]">
+          <NeonGradientCard className="md:w-[60vw] w-[90vw] h-[90vh] my-2">
             <CardTitle></CardTitle>
             <CardContent className="min-h-[55vh] p-0">
               <div className="mb-4">

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./globals.css";
 import { AppSidebar } from "@/components/app-sidebar";
