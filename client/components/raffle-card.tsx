@@ -12,7 +12,7 @@ const RaffleCard = ({ pubKey }: { pubKey: string }) => {
   const router = useRouter();
 
   return (
-    <NeonGradientCard className="w-[90vw] h-[14vh] my-2">
+    <NeonGradientCard className="md:w-[60vw] w-[90vw] h-[14vh] my-2">
       <div className="flex justify-between w-full">
         <div className="flex flex-col">
           <div className="text-xl">{raffle.name}</div>

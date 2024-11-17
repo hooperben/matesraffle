@@ -2,9 +2,9 @@
 
 export const raffles: Record<string, any> = {
   // MOJITO LOTTERY
-  "0x6fed660e5cf819c33356393ec03480b839e78af7a0ff0f4d163045bbfc798d3d": {
+  "0xa6817ee5de64d2a3120c09e8d78ca2065fa32e7dccc06662824492e329859a44": {
     pubKey:
-      "0x6fed660e5cf819c33356393ec03480b839e78af7a0ff0f4d163045bbfc798d3d",
+      "0xa6817ee5de64d2a3120c09e8d78ca2065fa32e7dccc06662824492e329859a44",
     name: "Mojito Lottery",
     prizes: ["1 Mojito"],
     rules: [
@@ -20,9 +20,9 @@ export const raffles: Record<string, any> = {
     accessCode: process.env.MOJITO_CODE,
   },
   // LUCKIEST MAN ALIVE
-  "0xc5186d960bd03ff22cf62e88e39ff901a07d3fd83bc499f945d6a031608b1dc0": {
+  "0x0cc88f7d95d58f612494a2b7469a79178164001d6507a8012488013919a9626a": {
     pubKey:
-      "0xc5186d960bd03ff22cf62e88e39ff901a07d3fd83bc499f945d6a031608b1dc0",
+      "0x0cc88f7d95d58f612494a2b7469a79178164001d6507a8012488013919a9626a",
     name: "Luckiest Alive",
     prizes: ["Potential Glory"],
     rules: ["This is a test"],

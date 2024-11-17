@@ -12,18 +12,15 @@ async function main() {
     signer,
   );
 
-  const bytes32Str = ethers.encodeBytes32String(process.env.MOJITO_SECRET!);
+  const bytes32Str = ethers.encodeBytes32String(process.env.TEST_SECRET!);
+  console.log(bytes32Str);
   const secret = ethers.toUtf8Bytes(bytes32Str);
   const publicRoundId = ethers.keccak256(secret);
-
-  console.log(secret);
   console.log(publicRoundId);
 
-  const tx = await contract.createRaffle(publicRoundId, [1, 2]);
-  await tx.wait();
+  const tx = await contract.settleRaffle(bytes32Str);
 
-  console.log("createRound:", tx);
-  console.log("created round: ", publicRoundId);
+  console.log("requesting randomness", tx);
 }
 
 main().catch((error) => {

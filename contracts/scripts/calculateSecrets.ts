@@ -11,14 +11,20 @@ async function main() {
 
   console.log(publicRoundId);
 
-  const mojitoSecret = ethers.toUtf8Bytes(process.env.MOJITO_SECRET!);
-  const mojitoPublic = ethers.keccak256(mojitoSecret);
+  const bytes32Str = ethers.encodeBytes32String(process.env.MOJITO_SECRET!);
+  console.log(bytes32Str);
+  const mojitoSecret = ethers.toUtf8Bytes(bytes32Str);
+  const mojitoPublic = ethers.keccak256(secret);
 
+  console.log("mojito secret: ", mojitoSecret);
   console.log("mojito public: ", mojitoPublic);
 
-  const testSecret = ethers.toUtf8Bytes(process.env.TEST_SECRET!);
+  const testBytes32Str = ethers.encodeBytes32String(process.env.TEST_SECRET!);
+  console.log(testBytes32Str);
+  const testSecret = ethers.toUtf8Bytes(testBytes32Str);
   const testPublic = ethers.keccak256(testSecret);
 
+  console.log("test secret: ", testSecret);
   console.log("test public: ", testPublic);
 }
 

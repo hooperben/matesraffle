@@ -12,7 +12,8 @@ async function main() {
     signer,
   );
 
-  const secret = ethers.toUtf8Bytes(process.env.TEST_SECRET!);
+  const bytes32Str = ethers.encodeBytes32String(process.env.TEST_SECRET!);
+  const secret = ethers.toUtf8Bytes(bytes32Str);
   const publicRoundId = ethers.keccak256(secret);
 
   console.log(secret);

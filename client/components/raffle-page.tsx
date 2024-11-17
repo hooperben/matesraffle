@@ -92,7 +92,7 @@ query {
 
       const data = response.data.data; // this is dumb
       return (
-        data.ticketBoughts.filter((raffle: any) => raffle.pubKey === pubKey) ||
+        data.ticketBoughts.filter((raffle: any) => raffle.raffle === pubKey) ||
         []
       );
     },

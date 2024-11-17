@@ -8,13 +8,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import MatesRaffleABI from "../../../MatesRaffleABI.json";
 import MatesRaffle from "../../../MatesRaffle.json";
 
-import {
-  toUtf8Bytes,
-  keccak256,
-  JsonRpcProvider,
-  Contract,
-  Wallet,
-} from "ethers";
+import { JsonRpcProvider, Contract, Wallet } from "ethers";
 import { verifyAuth } from "@/app/helpers/verify-auth";
 import { raffles } from "@/app/constants/launch-raffles";
 
