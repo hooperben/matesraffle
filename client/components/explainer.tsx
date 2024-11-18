@@ -53,8 +53,8 @@ const Explainer = () => {
           matesraffle.com aims to provide a good looking web app that allows for
           creation and management of raffle systems that source their randomness
           from public computers, that anyone can verify. matesraffle.com does
-          this by utilising Verifiably Random numbers from Chainlink, Pyth
-          Network and Chronicle, 3 separate oracle providers.
+          this by utilising Verifiably Random numbers from Chainlink and Pyth
+          Network, 2 separate oracle providers.
         </div>
 
         <div className="text-sm">
@@ -80,9 +80,9 @@ const Explainer = () => {
         </div>
 
         <div className="text-sm">
-          By getting 3 separate oracle providers we get 3 completely random
+          By getting 2 separate oracle providers we get 2 completely random
           sources of information, this would mean that in order for someone to
-          cheat this system, they would need to have control of all 3 oracle
+          cheat this system, they would need to have control of all 2 oracle
           providers. This is tricky, but not impossible, I think we can add more
           fairness guarantees.
         </div>
