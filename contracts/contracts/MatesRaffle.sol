@@ -20,12 +20,12 @@ contract MatesRaffle is
 
     struct Raffle {
         address manager;
-        uint64[] vrfs;
         uint64 pythRequestId;
         bytes32 chainLinkRandomRequestId;
         bytes32 reveal;
         bool open;
         uint256 ticketsSold;
+        uint64 prizes;
     }
 
     mapping(bytes32 rafflePubKey => Raffle raffle) public raffles;
@@ -67,35 +67,38 @@ contract MatesRaffle is
         emit TicketBought(_pubKey, owner, amount);
     }
 
-    event MR_RaffleCreated(bytes32 indexed pubKey, address indexed manager);
+    event MR_RaffleCreated(bytes32 indexed pubKey, Raffle indexed raffle);
 
-    function createRaffle(bytes32 _pubKey, uint64[] memory _vrfs) external {
+    function createRaffle(
+        bytes32 _pubKey,
+        uint64 _rafflePrizes,
+        bool _raffleOpen
+    ) external {
         require(_pubKey != bytes32(0), "Invalid public key");
         require(
             raffles[_pubKey].manager == address(0),
             "Raffle already exists"
         );
+        require(_rafflePrizes > 0, "no prizes? what kinda sick joke is that");
 
-        // TODO validate vrfs
         raffles[_pubKey] = Raffle({
             manager: msg.sender,
-            vrfs: _vrfs,
             pythRequestId: 0,
             chainLinkRandomRequestId: bytes32(0),
             reveal: bytes32(0),
-            open: true,
-            ticketsSold: 0
+            open: _raffleOpen,
+            ticketsSold: 0,
+            prizes: _rafflePrizes
         });
 
-        emit MR_RaffleCreated(_pubKey, msg.sender);
+        emit MR_RaffleCreated(_pubKey, raffles[_pubKey]);
     }
-
-    event MR_ChainLinkRequest(uint256 indexed _chainLinkRandomRequestId);
-    event MR_PythRequest(uint64 indexed _pythRequestId);
 
     function beginDrawRaffle(bytes32 _pubKey) external payable {
         Raffle memory raffle = raffles[_pubKey];
         require(raffle.manager != address(0), "Doesn't exist");
+
+        // TODO make sure that this is only callable by manager
 
         require(
             raffle.pythRequestId == 0 &&
@@ -103,21 +106,20 @@ contract MatesRaffle is
             "Already Written"
         );
 
+        // request CL random
         uint256 chainLinkRandomRequestId = _requestRandomWords(true); // native payment
-        uint64 pythRequestId = requestPythRandomNumber(
-            bytes32(chainLinkRandomRequestId)
-        );
-
-        raffles[_pubKey].pythRequestId = pythRequestId;
         raffles[_pubKey].chainLinkRandomRequestId = bytes32(
             chainLinkRandomRequestId
         );
 
+        // request PYTH random
+        uint64 pythRequestId = requestPythRandomNumber(
+            bytes32(chainLinkRandomRequestId)
+        );
+        raffles[_pubKey].pythRequestId = pythRequestId;
+
         // mark raffle as closed for ticket purchases
         raffles[_pubKey].open = false;
-
-        emit MR_ChainLinkRequest(chainLinkRandomRequestId);
-        emit MR_PythRequest(pythRequestId);
     }
 
     event RandomNessReveal(
@@ -128,7 +130,10 @@ contract MatesRaffle is
     function settleRaffle(bytes32 commitReveal) external {
         bytes32 reconstructed = keccak256(abi.encodePacked(commitReveal));
         Raffle memory raffle = raffles[reconstructed];
-        require(raffle.manager != address(0), "Doesn't exist");
+        require(
+            raffle.manager != address(0),
+            "Reconstructed Raffle Doesn't exist"
+        );
 
         raffle.reveal = commitReveal;
 

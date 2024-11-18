@@ -7,8 +7,12 @@ describe("Mates Raffle testing", async () => {
   let MatesRaffle: MatesRaffleDev;
   let Signers;
 
+  let Alice;
+  let Bob;
+
   before(async () => {
     ({ MatesRaffle, Signers } = await TestSuite());
+    [Alice, Bob] = Signers;
   });
 
   it("Testing that commit reveals match in ts and solidity", async () => {
