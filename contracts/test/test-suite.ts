@@ -9,8 +9,6 @@ const TestSuite = async () => {
 
   const MatesRaffleDeploymentAddress = MatesRaffleDeployment.target;
 
-  console.log(MatesRaffleDeploymentAddress);
-
   const MatesRaffle: MatesRaffleDev = new Contract(
     MatesRaffleDeploymentAddress,
     MatesRaffleDev__factory.abi,

@@ -67,7 +67,7 @@ contract MatesRaffle is
         emit TicketBought(_pubKey, owner, amount);
     }
 
-    event MR_RaffleCreated(bytes32 indexed pubKey, Raffle indexed raffle);
+    event RaffleCreated(bytes32 indexed pubKey, Raffle indexed raffle);
 
     function createRaffle(
         bytes32 _pubKey,
@@ -91,7 +91,7 @@ contract MatesRaffle is
             prizes: _rafflePrizes
         });
 
-        emit MR_RaffleCreated(_pubKey, raffles[_pubKey]);
+        emit RaffleCreated(_pubKey, raffles[_pubKey]);
     }
 
     function beginDrawRaffle(bytes32 _pubKey) external payable {

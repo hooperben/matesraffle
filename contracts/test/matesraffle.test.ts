@@ -1,8 +1,8 @@
 import { MatesRaffleDev } from "../typechain-types";
 import { TestSuite } from "./test-suite";
-import { keccak256, toUtf8Bytes } from "ethers";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 import { expect } from "chai";
+import { createRaffle, getRafflePubKey } from "../helpers/createRaffle";
 
 describe("Mates Raffle testing", async () => {
   let MatesRaffle: MatesRaffleDev;
@@ -17,16 +17,21 @@ describe("Mates Raffle testing", async () => {
   });
 
   it("should allow for creation of a raffle", async () => {
-    const rafflePrivateKey = "rafflePrivateKey1";
-    const encodedrafflePrivateKey = toUtf8Bytes(rafflePrivateKey);
+    const { publicKey } = getRafflePubKey("rafflePrivateKey1");
 
-    const rafflePubKey = keccak256(encodedrafflePrivateKey);
+    await createRaffle(MatesRaffle, publicKey, Alice);
 
-    await MatesRaffle.connect(Alice).createRaffle(rafflePubKey, 10, true);
-
-    const raffleDetails = await MatesRaffle.raffles(rafflePubKey);
+    const raffleDetails = await MatesRaffle.raffles(publicKey);
 
     expect(raffleDetails.manager).equal(Alice.address);
     expect(raffleDetails.prizes).equal(10);
+  });
+
+  it("should allow for creation of a raffle and purchase of tickets", async () => {
+    const { publicKey } = getRafflePubKey("test2");
+
+    await createRaffle(MatesRaffle, publicKey, Alice);
+
+    // as Bob, purchase a ticket
   });
 });
