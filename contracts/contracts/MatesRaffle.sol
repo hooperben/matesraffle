@@ -20,23 +20,24 @@ contract MatesRaffle is
 
     struct Raffle {
         address manager;
-        bytes32 pubKey;
         uint64[] vrfs;
         uint64 pythRequestId;
         bytes32 chainLinkRandomRequestId;
         bytes32 reveal;
         bool open;
+        uint256 ticketsSold;
     }
 
     mapping(bytes32 rafflePubKey => Raffle raffle) public raffles;
 
     function _getRandomness(
+        bytes32 raffleId,
         Raffle memory raffle
     ) internal view returns (bytes32) {
         return
             keccak256(
                 abi.encode(
-                    raffle.pubKey,
+                    raffleId,
                     chainLinkRequests[uint256(raffle.chainLinkRandomRequestId)],
                     pythRequests[raffle.pythRequestId],
                     raffle.reveal
@@ -70,18 +71,20 @@ contract MatesRaffle is
 
     function createRaffle(bytes32 _pubKey, uint64[] memory _vrfs) external {
         require(_pubKey != bytes32(0), "Invalid public key");
-        require(raffles[_pubKey].pubKey == bytes32(0), "Raffle already exists");
+        require(
+            raffles[_pubKey].manager == address(0),
+            "Raffle already exists"
+        );
 
         // TODO validate vrfs
-
         raffles[_pubKey] = Raffle({
             manager: msg.sender,
-            pubKey: _pubKey,
             vrfs: _vrfs,
             pythRequestId: 0,
             chainLinkRandomRequestId: bytes32(0),
             reveal: bytes32(0),
-            open: true
+            open: true,
+            ticketsSold: 0
         });
 
         emit MR_RaffleCreated(_pubKey, msg.sender);
@@ -92,7 +95,7 @@ contract MatesRaffle is
 
     function beginDrawRaffle(bytes32 _pubKey) external payable {
         Raffle memory raffle = raffles[_pubKey];
-        require(raffle.pubKey != bytes32(0), "Doesn't exist");
+        require(raffle.manager != address(0), "Doesn't exist");
 
         require(
             raffle.pythRequestId == 0 &&
@@ -123,13 +126,16 @@ contract MatesRaffle is
     );
 
     function settleRaffle(bytes32 commitReveal) external {
-        bytes32 reconstructed = keccak256(abi.encode(commitReveal));
+        bytes32 reconstructed = keccak256(abi.encodePacked(commitReveal));
         Raffle memory raffle = raffles[reconstructed];
-        require(raffle.pubKey != bytes32(0), "Doesn't exist");
+        require(raffle.manager != address(0), "Doesn't exist");
 
         raffle.reveal = commitReveal;
 
-        emit RandomNessReveal(reconstructed, uint256(_getRandomness(raffle)));
+        emit RandomNessReveal(
+            reconstructed,
+            uint256(_getRandomness(commitReveal, raffle))
+        );
     }
 
     function getRaffleRandomness(
@@ -140,6 +146,7 @@ contract MatesRaffle is
         if (raffle.reveal == bytes32(0)) {
             return 0;
         }
-        return uint256(_getRandomness(raffle));
+
+        return uint256(_getRandomness(_pubKey, raffle));
     }
 }
