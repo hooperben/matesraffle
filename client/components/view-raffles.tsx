@@ -5,30 +5,33 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import ShimmerButton from "./ui/shimmer-button";
 import { useRouter } from "next/navigation";
+import { raffles } from "@/app/constants/launch-raffles";
 
-const raffles = [{ name: "Mojito with Ben" }, { name: "Mates Ball 2024" }];
+const RaffleCard = ({ id, name }: { id: string; name: string }) => {
+  const router = useRouter();
 
-const RaffleCard = ({ name }: { name: string }) => (
-  <figure
-    className={cn(
-      "relative cursor-pointer overflow-auto rounded-xl border p-4",
-      // light styles
-      "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-      // dark styles
-      "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
-    )}
-  >
-    <div className="flex flex-row items-center gap-2">
-      <div className="flex flex-col">
-        <figcaption className="text-sm font-medium dark:text-white">
-          {name}
-        </figcaption>
-        <p className="text-xs font-medium dark:text-white/40">{name}</p>
+  return (
+    <figure
+      className={cn(
+        "relative cursor-pointer overflow-auto rounded-xl border p-4",
+        // light styles
+        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+        // dark styles
+        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+      )}
+      onClick={() => router.push(`/raffles/${id}`)}
+    >
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col">
+          <figcaption className="text-sm font-medium dark:text-white">
+            {name}
+          </figcaption>
+          <p className="text-xs font-medium dark:text-white/40">{name}</p>
+        </div>
       </div>
-    </div>
-  </figure>
-);
-
+    </figure>
+  );
+};
 const ViewRaffles = () => {
   const router = useRouter();
 
@@ -52,9 +55,12 @@ const ViewRaffles = () => {
       >
         <div>
           <Marquee pauseOnHover className="[--duration:20s]">
-            {raffles.map((raffle) => (
-              <RaffleCard key={raffle.name} {...raffle} />
-            ))}
+            {Object.entries(raffles).map(([key, value]) => {
+              console.log(`Raffle ID: ${key}`);
+              console.log(value);
+
+              return <RaffleCard key={value.name} name={value.name} id={key} />;
+            })}
           </Marquee>
         </div>
 
