@@ -15,8 +15,6 @@ import { raffles } from "@/app/constants/launch-raffles";
 export async function PUT(request: Request) {
   const { dynamicJwtToken, raffle, passCode } = await request.json();
 
-  console.log(raffle);
-
   const userFromToken = await verifyAuth(dynamicJwtToken);
   const address = userFromToken.verified_credentials[0].address;
   const activeRaffle = raffles[raffle.pubKey];
