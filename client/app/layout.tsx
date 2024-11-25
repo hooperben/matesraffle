@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
-import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import type { Metadata } from "next";
 
-import "./globals.css";
 import { AppSidebar } from "@/components/app-sidebar";
+import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import DynamicProvider from "@/lib/providers/dynamic";
 
 export const metadata: Metadata = {
   title: "MatesRaffle",
@@ -27,12 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <DynamicContextProvider
-            settings={{
-              environmentId: "d6294e7a-dc6e-4379-af32-d4ccde0d212f",
-              walletConnectors: [EthereumWalletConnectors],
-            }}
-          >
+          <DynamicProvider>
             <SidebarProvider>
               <AppSidebar />
               <main>
@@ -40,7 +34,7 @@ export default function RootLayout({
                 {children}
               </main>
             </SidebarProvider>
-          </DynamicContextProvider>
+          </DynamicProvider>
         </ThemeProvider>
       </body>
     </html>
