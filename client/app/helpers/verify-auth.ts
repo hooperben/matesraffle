@@ -21,8 +21,5 @@ export const verifyAuth = async (encodedJwt: string): Promise<any> => {
     ignoreExpiration: false,
   }) as JwtPayload;
 
-  console.log("decoded user:");
-  console.log(decodedToken);
-
   return decodedToken;
 };

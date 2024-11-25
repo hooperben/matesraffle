@@ -56,9 +56,6 @@ const ViewRaffles = () => {
         <div>
           <Marquee pauseOnHover className="[--duration:20s]">
             {Object.entries(raffles).map(([key, value]) => {
-              console.log(`Raffle ID: ${key}`);
-              console.log(value);
-
               return <RaffleCard key={value.name} name={value.name} id={key} />;
             })}
           </Marquee>
