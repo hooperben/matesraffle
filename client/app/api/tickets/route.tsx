@@ -36,8 +36,6 @@ export async function GET(request: Request) {
       email: raffleSalespersonEmail,
     });
 
-    console.log(raffleSalesperson);
-
     if (!raffleSalesperson) {
       return NextResponse.json(
         { message: "raffleSalespersonEmail not found" },
@@ -49,8 +47,6 @@ export async function GET(request: Request) {
       { rafflePubKey: raffleId },
       { _id: 1, name: 1, rafflePubKey: 1, createdAt: 1, updatedAt: 1 },
     );
-
-    console.log(raffle);
 
     const raffleManagerStatus = await RaffleManager.findOne({
       userId: raffleSalesperson._id,
