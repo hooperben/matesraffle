@@ -46,19 +46,6 @@ export async function GET(request: Request) {
           };
         }
 
-        // if they are a raffle sales person - include the most recent 10 ticket sales
-        if (raffles.isRaffleSalesPerson) {
-          // TODO make real
-          const tickets = await Ticket.find({ raffleId: raffles._id })
-            .limit(10)
-            .populate("userId soldBy");
-
-          raffles = {
-            ...raffles,
-            tickets,
-          };
-        }
-
         // if they are raffle admin - include list of all raffle managers
         if (raffles.isRaffleAdmin) {
           const raffleManagers = await RaffleManager.find({
@@ -74,8 +61,6 @@ export async function GET(request: Request) {
   } else {
     raffles = await Raffle.find().sort({ createdAt: -1 }).limit(5);
   }
-
-  console.log(raffles);
 
   return NextResponse.json(raffles);
 }

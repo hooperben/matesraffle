@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import AddTeammate from "./add-teammate";
 import SellTicket from "./sell-ticket";
+import TicketTable from "./ticket-table";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
   const { user } = useDynamicContext();
@@ -50,8 +51,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
       {isLoadingUserRaffleData && (
         <div className="flex flex-col">
           <Skeleton className="w-[200px] h-[40px]" />
-
-          <Skeleton className="w-full h-[500px] mt-8" />
+          <Skeleton className="w-full h-[400px] mt-8" />
         </div>
       )}
 
@@ -84,11 +84,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
       )}
 
       {userRaffleData && !addingTeammate && !sellingTicket && (
-        <div className="flex flex-col mt-8">
-          {userRaffleData.tickets && userRaffleData.tickets.length === 0 && (
-            <div>No tickets sold yet!</div>
-          )}
-        </div>
+        <TicketTable raffleId={pubKey} />
       )}
 
       {addingTeammate && <AddTeammate />}
