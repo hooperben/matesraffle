@@ -120,10 +120,7 @@ export async function POST(request: Request) {
     });
 
     // if they are not salesperson or admin, don't let them create tickets
-    if (
-      !raffleManagerStatus.raffleSalesperson ||
-      !raffleManagerStatus.raffleAdmin
-    ) {
+    if (!raffleManagerStatus.raffleSalesperson) {
       return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
     }
 
