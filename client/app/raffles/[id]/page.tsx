@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { raffles } from "@/app/constants/launch-raffles";
 import RafflePage from "@/components/raffle-page";
-
-const isRaffleAdminOrSalesPerson = async () => {};
 
 export default async function Page({
   params,

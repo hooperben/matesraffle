@@ -8,6 +8,7 @@ import { Skeleton } from "./ui/skeleton";
 import AddTeammate from "./add-teammate";
 import SellTicket from "./sell-ticket";
 import TicketTable from "./ticket-table";
+import { useTicketDetails } from "@/hooks/use-ticket-details";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
   const { user } = useDynamicContext();
@@ -20,6 +21,9 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
     isLoading: isLoadingUserRaffleData,
     refetch: refetchRaffleInfo,
   } = useRaffleInformation(pubKey);
+
+  const { isLoading: isLoadingTicketData, refetch: refetchTicketData } =
+    useTicketDetails(pubKey);
 
   // if the user object changes, refresh raffle info
   useEffect(() => {
@@ -43,17 +47,19 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
 
   const handleSuccessfulTicketSale = async () => {
     setSellingTicket(false);
-    await refetchRaffleInfo();
+    await refetchTicketData();
+  };
+
+  const handleSuccessfulTeammateAdd = async () => {
+    setAddingTeammate(false);
   };
 
   return (
     <div className="flex flex-col m-4">
-      {isLoadingUserRaffleData && (
-        <div className="flex flex-col">
-          <Skeleton className="w-[200px] h-[40px]" />
-          <Skeleton className="w-full h-[400px] mt-8" />
-        </div>
-      )}
+      <div className="flex flex-col">
+        {isLoadingUserRaffleData && <Skeleton className="w-[200px] h-[40px]" />}
+        {isLoadingTicketData && <Skeleton className="w-full h-[400px] mt-8" />}
+      </div>
 
       {userRaffleData && (
         <div className="flex flex-row w-full justify-between">
@@ -87,7 +93,12 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
         <TicketTable raffleId={pubKey} />
       )}
 
-      {addingTeammate && <AddTeammate />}
+      {addingTeammate && (
+        <AddTeammate
+          handleSuccessfulTeammateAdd={handleSuccessfulTeammateAdd}
+          raffleId={pubKey}
+        />
+      )}
 
       {sellingTicket && (
         <SellTicket

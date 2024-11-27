@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import RaffleCard from "@/components/raffle-card";
 import Raffle from "@/lib/models/raffle";
+import { connect } from "../helpers/database";
 
 async function getRaffles() {
+  await connect();
+
   const raffles = await Raffle.find().sort({ createdAt: -1 }).limit(5);
 
   return raffles;

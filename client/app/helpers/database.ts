@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { MongoClient } from "mongodb";
 
 import mongoose from "mongoose";
+
+/* eslint-disable vars-on-top, no-var, no-multi-assign, no-shadow -- False positive */
+// from https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/lib/dbConnect.ts
+declare global {
+  var mongoose: any; // This must be a `var` and not a `let / const`
+}
 
 let cached = global.mongoose;
 

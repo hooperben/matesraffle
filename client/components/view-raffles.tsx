@@ -1,37 +1,38 @@
 "use client";
 
-import Marquee from "@/components/ui/marquee";
-import { cn } from "@/lib/utils";
+// import Marquee from "@/components/ui/marquee";
+// import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import ShimmerButton from "./ui/shimmer-button";
 import { useRouter } from "next/navigation";
-import { raffles } from "@/app/constants/launch-raffles";
+// import { raffles } from "@/app/constants/launch-raffles";
 
-const RaffleCard = ({ id, name }: { id: string; name: string }) => {
-  const router = useRouter();
+// const RaffleCard = ({ id, name }: { id: string; name: string }) => {
+//   const router = useRouter();
 
-  return (
-    <figure
-      className={cn(
-        "relative cursor-pointer overflow-auto rounded-xl border p-4",
-        // light styles
-        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-        // dark styles
-        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
-      )}
-      onClick={() => router.push(`/raffles/${id}`)}
-    >
-      <div className="flex flex-row items-center gap-2">
-        <div className="flex flex-col">
-          <figcaption className="text-sm font-medium dark:text-white">
-            {name}
-          </figcaption>
-          <p className="text-xs font-medium dark:text-white/40">{name}</p>
-        </div>
-      </div>
-    </figure>
-  );
-};
+//   return (
+//     <figure
+//       className={cn(
+//         "relative cursor-pointer overflow-auto rounded-xl border p-4",
+//         // light styles
+//         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+//         // dark styles
+//         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+//       )}
+//       onClick={() => router.push(`/raffles/${id}`)}
+//     >
+//       <div className="flex flex-row items-center gap-2">
+//         <div className="flex flex-col">
+//           <figcaption className="text-sm font-medium dark:text-white">
+//             {name}
+//           </figcaption>
+//           <p className="text-xs font-medium dark:text-white/40">{name}</p>
+//         </div>
+//       </div>
+//     </figure>
+//   );
+// };
+
 const ViewRaffles = () => {
   const router = useRouter();
 
@@ -53,13 +54,13 @@ const ViewRaffles = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 3.5, duration: 0.5 }}
       >
-        <div>
+        {/* <div>
           <Marquee pauseOnHover className="[--duration:20s]">
             {Object.entries(raffles).map(([key, value]) => {
               return <RaffleCard key={value.name} name={value.name} id={key} />;
             })}
           </Marquee>
-        </div>
+        </div> */}
 
         <div className="flex flex-row justify-start ml-2 my-3">
           <ShimmerButton

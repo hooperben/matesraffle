@@ -2,9 +2,7 @@ import { connect } from "@/app/helpers/database";
 import { verifyAuth } from "@/app/helpers/verify-auth";
 import Raffle from "@/lib/models/raffle";
 import RaffleManager from "@/lib/models/raffle-manager";
-import Ticket from "@/lib/models/ticket";
 import User from "@/lib/models/user";
-import { keccak256, toUtf8Bytes } from "ethers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -65,55 +63,43 @@ export async function GET(request: Request) {
   return NextResponse.json(raffles);
 }
 
-export async function PUT(request: Request) {
-  // const { dynamicJwtToken, raffle, passCode } = await request.json();
+// export async function POST(request: Request) {
+//   const { dynamicJwtToken, raffleName, raffleSecret } = await request.json();
 
-  await connect();
+//   // TODO verify auth and get user from token
 
-  const user = await User.findOne();
+//   await connect();
 
-  console.log(user);
+//   const secret = toUtf8Bytes(raffleSecret);
 
-  return NextResponse.json({ message: "Connected to DB" }, { status: 200 });
-}
+//   const rafflePubKey = keccak256(secret);
 
-export async function POST(request: Request) {
-  const { dynamicJwtToken, raffleName, raffleSecret } = await request.json();
+//   // create the raffle
+//   const raffle = new Raffle({
+//     rafflePubKey,
+//     raffleSecret,
+//     name: raffleName,
+//   });
 
-  // TODO verify auth and get user from token
+//   await raffle.save();
 
-  await connect();
+//   console.log(raffle);
 
-  const secret = toUtf8Bytes(raffleSecret);
+//   // TODO change to use token value
+//   const user = await User.findOne();
 
-  const rafflePubKey = keccak256(secret);
+//   console.log(user);
 
-  // create the raffle
-  const raffle = new Raffle({
-    rafflePubKey,
-    raffleSecret,
-    name: raffleName,
-  });
+//   const raffleManager = new RaffleManager({
+//     raffleId: raffle._id,
+//     userId: user._id,
+//     raffleAdmin: true,
+//     raffleSalesperson: true,
+//   });
 
-  await raffle.save();
+//   await raffleManager.save();
 
-  console.log(raffle);
+//   console.log(raffleManager);
 
-  // TODO change to use token value
-  const user = await User.findOne();
-
-  console.log(user);
-
-  const raffleManager = new RaffleManager({
-    raffleId: raffle._id,
-    userId: user._id,
-    raffleAdmin: true,
-    raffleSalesperson: true,
-  });
-
-  await raffleManager.save();
-
-  console.log(raffleManager);
-
-  return NextResponse.json({ message: "Created Records" }, { status: 200 });
-}
+//   return NextResponse.json({ message: "Created Records" }, { status: 200 });
+// }

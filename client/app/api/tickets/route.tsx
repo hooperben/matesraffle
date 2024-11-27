@@ -161,10 +161,7 @@ export async function POST(request: Request) {
 
     await ticket.save();
 
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 200 },
-    );
+    return NextResponse.json({ message: "Ticket created!" }, { status: 200 });
   } catch (err) {
     console.error("ERROR creating ticket:");
     console.error(err);
