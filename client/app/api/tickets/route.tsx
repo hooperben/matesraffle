@@ -53,11 +53,8 @@ export async function GET(request: Request) {
       raffleId: raffle._id,
     });
 
-    // if they are not salesperson or admin, don't let them create tickets
-    if (
-      !raffleManagerStatus.raffleSalesperson ||
-      !raffleManagerStatus.raffleAdmin
-    ) {
+    // if they are not salesperson or admin, don't let them see tickets
+    if (!raffleManagerStatus.raffleSalesperson) {
       return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
     }
 

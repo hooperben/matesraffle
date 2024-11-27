@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "./ui/button";
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { DynamicWidget, useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useRaffleInformation } from "@/hooks/use-raffle-information";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
@@ -28,7 +28,9 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
   // if the user object changes, refresh raffle info
   useEffect(() => {
     refetchRaffleInfo();
-  }, [user, refetchRaffleInfo]);
+    refetchTicketData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- as intended
+  }, [user]);
 
   useEffect(() => {
     console.log(userRaffleData);
@@ -58,7 +60,6 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
     <div className="flex flex-col m-4">
       <div className="flex flex-col">
         {isLoadingUserRaffleData && <Skeleton className="w-[200px] h-[40px]" />}
-        {isLoadingTicketData && <Skeleton className="w-full h-[400px] mt-8" />}
       </div>
 
       {userRaffleData && (
@@ -89,6 +90,10 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
         </div>
       )}
 
+      <div className="flex flex-col">
+        {isLoadingTicketData && <Skeleton className="w-full h-[400px] mt-8" />}
+      </div>
+
       {userRaffleData && !addingTeammate && !sellingTicket && (
         <TicketTable raffleId={pubKey} />
       )}
@@ -105,6 +110,13 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           handleSuccessfulTicketSale={handleSuccessfulTicketSale}
           raffleId={pubKey}
         />
+      )}
+
+      {!user && (
+        <div className="flex flex-col">
+          <p>Please login to view raffle details</p>
+          <DynamicWidget />
+        </div>
       )}
     </div>
   );
