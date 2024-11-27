@@ -1,4 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 
 import { AppSidebar } from "@/components/app-sidebar";
@@ -29,10 +30,14 @@ export default function RootLayout({
           <DynamicProvider>
             <SidebarProvider>
               <AppSidebar />
-              <main>
+
+              <div className="flex flex-col w-full">
                 <SidebarTrigger />
-                {children}
-              </main>
+                <main className="flex-grow">
+                  {children}
+                  <Toaster />
+                </main>
+              </div>
             </SidebarProvider>
           </DynamicProvider>
         </ThemeProvider>

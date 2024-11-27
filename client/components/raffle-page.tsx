@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useRaffleInformation } from "@/hooks/use-raffle-information";
@@ -10,8 +9,6 @@ import AddTeammate from "./add-teammate";
 import SellTicket from "./sell-ticket";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
-  const router = useRouter();
-
   const { user } = useDynamicContext();
 
   const [addingTeammate, setAddingTeammate] = useState(false);
@@ -23,7 +20,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
     refetch: refetchRaffleInfo,
   } = useRaffleInformation(pubKey);
 
-  // if the user object changes, refresh it
+  // if the user object changes, refresh raffle info
   useEffect(() => {
     refetchRaffleInfo();
   }, [user, refetchRaffleInfo]);
@@ -43,34 +40,64 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
     }
   };
 
+  const handleSuccessfulTicketSale = async () => {
+    setSellingTicket(false);
+    await refetchRaffleInfo();
+  };
+
   return (
-    <div className="flex flex-col w-full">
-      {isLoadingUserRaffleData && <Skeleton className="w-[200px] h-[40px]" />}
+    <div className="flex flex-col m-4">
+      {isLoadingUserRaffleData && (
+        <div className="flex flex-col">
+          <Skeleton className="w-[200px] h-[40px]" />
+
+          <Skeleton className="w-full h-[500px] mt-8" />
+        </div>
+      )}
 
       {userRaffleData && (
-        <div className="flex flex-col">
-          <div className="flex flex-row w-full justify-between">
-            <h1 className="text-xl">{userRaffleData.name}</h1>
+        <div className="flex flex-row w-full justify-between">
+          <h1 className="text-3xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
+            {userRaffleData.name}
+          </h1>
 
-            <div className="flex gap-2">
-              {userRaffleData?.isRaffleAdmin && (
-                <Button onClick={() => handleButton("teammate")}>
-                  Add Teammate
-                </Button>
-              )}
+          <div className="flex gap-2">
+            {userRaffleData?.isRaffleAdmin && (
+              <Button
+                onClick={() => handleButton("teammate")}
+                className="text-xs"
+              >
+                Add Teammate
+              </Button>
+            )}
 
-              {userRaffleData?.isRaffleSalesPerson && (
-                <Button onClick={() => handleButton("ticket")}>
-                  Sell Ticket
-                </Button>
-              )}
-            </div>
+            {userRaffleData?.isRaffleSalesPerson && (
+              <Button
+                onClick={() => handleButton("ticket")}
+                className="text-xs"
+              >
+                Sell Ticket
+              </Button>
+            )}
           </div>
-
-          {addingTeammate && <AddTeammate />}
-
-          {sellingTicket && <SellTicket />}
         </div>
+      )}
+
+      {userRaffleData && !addingTeammate && !sellingTicket && (
+        <div className="flex flex-col mt-8">
+          {userRaffleData.tickets && userRaffleData.tickets.length === 0 && (
+            <div>No tickets sold yet!</div>
+          )}
+        </div>
+      )}
+
+      {addingTeammate && <AddTeammate />}
+
+      {sellingTicket && (
+        <SellTicket
+          handleSuccessfulTicketSale={handleSuccessfulTicketSale}
+          raffleId={pubKey}
+        />
       )}
     </div>
   );

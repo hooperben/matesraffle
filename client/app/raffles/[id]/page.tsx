@@ -12,7 +12,7 @@ export default async function Page({
   const pubKey = (await params).id;
 
   return (
-    <div className="flex flex-col m-5 w-full">
+    <div className="flex flex-col w-full">
       <RafflePage pubKey={pubKey} />
     </div>
   );

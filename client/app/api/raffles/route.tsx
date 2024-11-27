@@ -2,6 +2,7 @@ import { connect } from "@/app/helpers/database";
 import { verifyAuth } from "@/app/helpers/verify-auth";
 import Raffle from "@/lib/models/raffle";
 import RaffleManager from "@/lib/models/raffle-manager";
+import Ticket from "@/lib/models/ticket";
 import User from "@/lib/models/user";
 import { keccak256, toUtf8Bytes } from "ethers";
 import { NextResponse } from "next/server";
@@ -48,7 +49,10 @@ export async function GET(request: Request) {
         // if they are a raffle sales person - include the most recent 10 ticket sales
         if (raffles.isRaffleSalesPerson) {
           // TODO make real
-          const tickets: string[] = [];
+          const tickets = await Ticket.find({ raffleId: raffles._id })
+            .limit(10)
+            .populate("userId soldBy");
+
           raffles = {
             ...raffles,
             tickets,

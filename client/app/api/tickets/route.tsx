@@ -1,90 +1,108 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
-import { createNexusClient } from "@biconomy/sdk";
-import { base } from "viem/chains";
-import { http } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import MatesRaffleABI from "../../../MatesRaffleABI.json";
-import MatesRaffle from "../../../MatesRaffle.json";
 
-import { JsonRpcProvider, Contract, Wallet } from "ethers";
 import { verifyAuth } from "@/app/helpers/verify-auth";
-import { raffles } from "@/app/constants/launch-raffles";
+import Raffle from "@/lib/models/raffle";
+import { connect } from "@/app/helpers/database";
+import User from "@/lib/models/user";
+import RaffleManager from "@/lib/models/raffle-manager";
+import Ticket from "@/lib/models/ticket";
 
-export async function PUT(request: Request) {
-  const { dynamicJwtToken, raffle, passCode } = await request.json();
+export async function POST(request: Request) {
+  const { raffleId, name, email, amount, cost } = await request.json();
 
-  const userFromToken = await verifyAuth(dynamicJwtToken);
-  const address = userFromToken.verified_credentials[0].address;
-  const activeRaffle = raffles[raffle.pubKey];
+  const authHeader = request.headers.get("Authorization");
+  const dynamicJwtToken = authHeader ? authHeader.replace("Bearer ", "") : null;
 
-  if (!activeRaffle) {
-    return NextResponse.json({ message: "no raffle found" }, { status: 400 });
-  }
-
-  if (activeRaffle.accessCode !== passCode) {
-    return NextResponse.json(
-      { message: "Invalid code sorry :(" },
-      { status: 400 },
-    );
+  if (!dynamicJwtToken) {
+    return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
   }
 
   try {
-    const provider = new JsonRpcProvider(process.env.BASE_MAINNET_RPC_URL!);
-    const signer = new Wallet(process.env.PRIVATE_KEY!, provider);
-    const contract = new Contract(MatesRaffle.address, MatesRaffleABI, signer);
-    const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY!}`);
+    await connect();
 
-    // this is not unique key, just what biconomy had
-    const bundlerUrl =
-      "https://bundler.biconomy.io/api/v3/8453/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44";
+    const userFromToken = await verifyAuth(dynamicJwtToken);
+    const { email: raffleSalespersonEmail } = userFromToken;
 
-    const nexusClient = await createNexusClient({
-      signer: account,
-      chain: base,
-      transport: http(),
-      bundlerTransport: http(bundlerUrl),
+    if (!raffleSalespersonEmail) {
+      return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
+    }
+
+    const raffleSalesperson = await User.findOne({
+      email: raffleSalespersonEmail,
     });
-    const smartAccountAddress = await nexusClient.account.address;
-    console.log(smartAccountAddress);
 
-    const ticketHolder: `0x${string}` = address;
-
-    const balance = await contract.balanceOf(address, raffle.pubKey);
-
-    if (balance != BigInt(0)) {
+    if (!raffleSalesperson) {
       return NextResponse.json(
-        { message: "Already have a ticket!" },
+        { message: "raffleSalespersonEmail not found" },
+        { status: 404 },
+      );
+    }
+
+    const raffle = await Raffle.findOne(
+      { rafflePubKey: raffleId },
+      { _id: 1, name: 1, rafflePubKey: 1, createdAt: 1, updatedAt: 1 },
+    );
+
+    if (!raffle) {
+      return NextResponse.json(
+        { message: "Raffle not found" },
+        { status: 404 },
+      );
+    }
+
+    const raffleManagerStatus = await RaffleManager.findOne({
+      userId: raffleSalesperson._id,
+      raffleId: raffle._id,
+    });
+
+    // if they are not salesperson or admin, don't let them create tickets
+    if (
+      !raffleManagerStatus.raffleSalesperson ||
+      !raffleManagerStatus.raffleAdmin
+    ) {
+      return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
+    }
+
+    if (!name || !email) {
+      return NextResponse.json(
+        { message: "Name and email are required" },
         { status: 400 },
       );
     }
 
-    const txDetails = await contract.buyTickets.populateTransaction(
-      raffle.pubKey,
-      ticketHolder,
-      1,
+    const ticketBuyerUser = await User.findOneAndUpdate(
+      { email },
+      { firstName: name, email },
+      { new: true, upsert: true },
     );
 
-    const tx = {
-      to: txDetails.to as `0x${string}`,
-      data: txDetails.data as `0x${string}`,
-    };
+    if (!ticketBuyerUser) {
+      return NextResponse.json(
+        { message: "Failed to upsert user" },
+        { status: 500 },
+      );
+    }
 
-    const hash = await nexusClient.sendTransaction({
-      calls: [tx],
+    // finally create the ticket record
+    const ticket = new Ticket({
+      raffleId: raffle._id,
+      userId: ticketBuyerUser._id,
+      amount: parseInt(amount),
+      cost: parseInt(cost),
+      soldBy: raffleSalesperson._id,
     });
-    const receipt = await nexusClient.waitForTransactionReceipt({ hash });
+
+    await ticket.save();
 
     return NextResponse.json(
-      { hash: receipt.transactionHash },
+      { message: "Something went wrong" },
       { status: 200 },
     );
-  } catch (error: any) {
-    console.log(error);
-    return NextResponse.json(
-      { error: "Something went wrong getting your ticket" },
-      { status: 400 },
-    );
+  } catch (err) {
+    console.error("ERROR creating ticket:");
+    console.error(err);
+    return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
   }
 }

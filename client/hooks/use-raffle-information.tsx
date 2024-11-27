@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { getAuthToken } from "@dynamic-labs/sdk-react-core";
@@ -11,6 +12,7 @@ interface RaffleDetails {
   updatedAt: string;
   isRaffleAdmin?: boolean;
   isRaffleSalesPerson?: boolean;
+  tickets?: any[]; // TODO fix
 }
 
 export const useRaffleInformation = (raffleId: string) => {
