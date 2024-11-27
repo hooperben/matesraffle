@@ -2,6 +2,8 @@
 import { raffles } from "@/app/constants/launch-raffles";
 import RafflePage from "@/components/raffle-page";
 
+const isRaffleAdminOrSalesPerson = async () => {};
+
 export default async function Page({
   params,
 }: {
@@ -9,11 +11,8 @@ export default async function Page({
 }) {
   const pubKey = (await params).id;
 
-  const raffle = raffles[pubKey];
   return (
-    <div className="flex flex-col m-5">
-      <div className="text-5xl font-bold mb-2">{raffle.name}</div>
-
+    <div className="flex flex-col m-5 w-full">
       <RafflePage pubKey={pubKey} />
     </div>
   );

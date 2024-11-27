@@ -1,42 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import RaffleCard from "@/components/raffle-card";
-import axios from "axios";
-import { raffles } from "../constants/launch-raffles";
-
-const pythReceivedsQuery = `
-  query {
-    mrRaffleCreateds(orderBy: blockTimestamp) {
-      id
-      pubKey
-      blockTimestamp
-    }
-  }
-`;
+import Raffle from "@/lib/models/raffle";
 
 async function getRaffles() {
-  const response = await axios.post(
-    process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
-    {
-      query: pythReceivedsQuery,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  const raffles = await Raffle.find().sort({ createdAt: -1 }).limit(5);
 
-  const data = response.data.data; // this is dumb
-
-  return data.mrRaffleCreateds;
+  return raffles;
 }
 
 export default async function Home() {
   const deployedRaffles = await getRaffles();
-
-  const formattedRaffles = deployedRaffles
-    ?.map((raffle: any) => raffles[raffle.pubKey])
-    .filter((raffle: any) => raffle !== undefined);
 
   return (
     <div className="flex flex-col p-5 gap-2">
@@ -44,14 +17,18 @@ export default async function Home() {
         Mates Raffles
       </div>
 
-      {formattedRaffles.length === 0 && (
+      {deployedRaffles.length === 0 && (
         <div className="text-xl">
           Apologies compadre, no raffles available at this hour.
         </div>
       )}
 
-      {formattedRaffles.map((raffle: any) => (
-        <RaffleCard key={raffle.pubKey} pubKey={raffle.pubKey} />
+      {deployedRaffles.map((raffle: any) => (
+        <RaffleCard
+          key={raffle.rafflePubKey}
+          name={raffle.name}
+          pubKey={raffle.rafflePubKey}
+        />
       ))}
     </div>
   );
