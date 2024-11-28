@@ -1,4 +1,4 @@
-import { getAuthToken } from "@dynamic-labs/sdk-react-core";
+import { getAuthToken, useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -18,6 +18,8 @@ export interface Ticket {
 }
 
 export const useTicketDetails = (raffleId: string) => {
+  const { user } = useDynamicContext();
+
   const getTickets = async () => {
     const dynamicJwtToken = getAuthToken();
 
@@ -36,6 +38,7 @@ export const useTicketDetails = (raffleId: string) => {
   const queryFn = useQuery({
     queryFn: getTickets,
     queryKey: ["get-raffle-tickets", raffleId],
+    enabled: !!user,
   });
 
   return queryFn;

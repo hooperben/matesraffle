@@ -83,10 +83,12 @@ const SellTicket = ({
   };
 
   return (
-    <div className="mt-4">
-      <h1 className="text-xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
-        {showConfirmation ? "Confirm Ticket Details" : "Sell Ticket"}
-      </h1>
+    <div className="flex flex-col gap-3 mt-4">
+      <div className="flex flex-col w-full max-w-[500px] mx-auto mt-2 gap-3 text-md">
+        <h1 className="text-xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
+          {showConfirmation ? "Confirm Ticket Details" : "Sell Ticket"}
+        </h1>
+      </div>
 
       {!showConfirmation && (
         <form
@@ -183,7 +185,7 @@ const SellTicket = ({
       )}
 
       {!showConfirmation && (
-        <div className="flex flex-col gap-3 mt-3">
+        <div className="flex flex-col gap-3 w-full max-w-[500px] mx-auto">
           <Button
             onClick={handleSuccessfulTicketSale}
             variant="destructive"

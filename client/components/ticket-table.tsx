@@ -26,7 +26,7 @@ const TicketTable = ({ raffleId }: { raffleId: string }) => {
   const { data: ticketData } = useTicketDetails(raffleId);
 
   return (
-    <div className="flex flex-col mt-8">
+    <div className="flex flex-col p-4">
       {ticketData && <DataTable columns={columns} data={ticketData} />}
     </div>
   );

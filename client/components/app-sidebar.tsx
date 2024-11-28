@@ -26,14 +26,14 @@ const items = [
     icon: Home,
   },
   {
-    title: "How does it work?",
-    url: "/faqs",
-    icon: FileQuestion,
-  },
-  {
     title: "Raffles",
     url: "/raffles",
     icon: Ticket,
+  },
+  {
+    title: "How does this work?",
+    url: "/faqs",
+    icon: FileQuestion,
   },
 ];
 

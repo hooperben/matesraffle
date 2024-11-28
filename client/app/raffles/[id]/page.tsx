@@ -1,11 +1,7 @@
 import RafflePage from "@/components/raffle-page";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const pubKey = (await params).id;
+export default function Page({ params }: { params: { id: string } }) {
+  const pubKey = params.id;
 
   return (
     <div className="flex flex-col w-full">
