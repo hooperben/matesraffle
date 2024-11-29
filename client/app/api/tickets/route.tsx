@@ -58,10 +58,8 @@ export async function GET(request: Request) {
     }
 
     const tickets = await Ticket.find({ raffleId: raffle._id })
-      .limit(10)
+      .limit(20)
       .populate("userId soldBy");
-
-    console.log(tickets);
 
     const ticketSums = await Ticket.aggregate([
       { $match: { raffleId: raffle._id } },

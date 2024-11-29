@@ -100,23 +100,19 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           }
         >
           <div>
-            {ticketData ? (
-              <TabsList className="mt-2 ml-5">
-                <TabsTrigger value="account">Prizes</TabsTrigger>
-                <TabsTrigger value="password">Tickets</TabsTrigger>
-                {/* TODO add in the raffles.raffleManagers array to the team members page */}
-                {/* <TabsTrigger value="teammates">Team Mates</TabsTrigger> */}
-              </TabsList>
-            ) : (
-              <h1 className="text-xl font-bold mt-2 ml-5">Prizes</h1>
-            )}
+            <TabsList className="mt-2 ml-5">
+              <TabsTrigger value="prizes">Prizes</TabsTrigger>
+              <TabsTrigger value="tickets" disabled={!ticketData}>
+                Tickets
+              </TabsTrigger>
+            </TabsList>
           </div>
 
-          <TabsContent value="account">
+          <TabsContent value="prizes">
             <SponsorCard />
           </TabsContent>
 
-          <TabsContent value="password">
+          <TabsContent value="tickets">
             {userRaffleData && (
               <div className="flex justify-end gap-1 px-4">
                 {userRaffleData?.isRaffleAdmin && (

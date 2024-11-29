@@ -11,15 +11,11 @@ const columns: ColumnDef<Ticket>[] = [
   },
   {
     accessorKey: "amount",
-    header: "# Tickets",
+    header: "Tickets",
   },
   {
     accessorKey: "cost",
     header: "Paid",
-  },
-  {
-    accessorKey: "soldBy.firstName",
-    header: "Sold By",
   },
 ];
 
@@ -27,10 +23,9 @@ const TicketTable = ({ raffleId }: { raffleId: string }) => {
   const { data: ticketData } = useTicketDetails(raffleId);
 
   return (
-    <div className="flex flex-col p-4">
-      {ticketData && <DataTable columns={columns} data={ticketData.tickets} />}
+    <div className="flex flex-col p-2">
       {ticketData && (
-        <div className="flex text-right justify-end m-1 gap-1">
+        <div className="flex text-right justify-end mb-1 gap-1">
           <Badge
             variant="outline"
             className="flex justify-center w-[140px] text-center"
@@ -45,6 +40,7 @@ const TicketTable = ({ raffleId }: { raffleId: string }) => {
           </Badge>
         </div>
       )}
+      {ticketData && <DataTable columns={columns} data={ticketData.tickets} />}
     </div>
   );
 };
