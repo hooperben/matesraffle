@@ -27,7 +27,13 @@ const TicketTable = ({ raffleId }: { raffleId: string }) => {
 
   return (
     <div className="flex flex-col p-4">
-      {ticketData && <DataTable columns={columns} data={ticketData} />}
+      {ticketData && (
+        <div className="flex flex-col text-right justify-end">
+          <p>Tickets Sold: {ticketData.ticketSums.totalAmount}</p>
+          <p>Total Raised: ${ticketData.ticketSums.totalCost}</p>
+        </div>
+      )}
+      {ticketData && <DataTable columns={columns} data={ticketData.tickets} />}
     </div>
   );
 };

@@ -23,15 +23,16 @@ export const useTicketDetails = (raffleId: string) => {
   const getTickets = async () => {
     const dynamicJwtToken = getAuthToken();
 
-    const { data } = await axios.get<Ticket[]>(
-      `/api/tickets?raffleId=${raffleId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${dynamicJwtToken}`,
-        },
+    const { data } = await axios.get<{
+      tickets: Ticket[];
+      ticketSums: { totalAmount: number; totalCost: number };
+    }>(`/api/tickets?raffleId=${raffleId}`, {
+      headers: {
+        Authorization: `Bearer ${dynamicJwtToken}`,
       },
-    );
+    });
 
+    console.log(data);
     return data;
   };
 

@@ -24,7 +24,6 @@ export async function GET(request: Request) {
     await connect();
 
     // check the user can view these ticket records
-
     const userFromToken = await verifyAuth(dynamicJwtToken);
     const { email: raffleSalespersonEmail } = userFromToken;
 
@@ -64,7 +63,27 @@ export async function GET(request: Request) {
 
     console.log(tickets);
 
-    return NextResponse.json(tickets);
+    const ticketSums = await Ticket.aggregate([
+      { $match: { raffleId: raffle._id } },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: { $toDouble: "$amount" } },
+          totalCost: { $sum: { $toDouble: "$cost" } },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalAmount: 1,
+          totalCost: 1,
+        },
+      },
+    ]);
+
+    console.log(ticketSums);
+
+    return NextResponse.json({ tickets, ticketSums: ticketSums[0] });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ message: "Invalid Auth" }, { status: 401 });
