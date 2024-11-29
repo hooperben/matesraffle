@@ -2,6 +2,7 @@ import { useTicketDetails, Ticket } from "@/hooks/use-ticket-details";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "./data-table";
+import { Badge } from "./ui/badge";
 
 const columns: ColumnDef<Ticket>[] = [
   {
@@ -27,13 +28,23 @@ const TicketTable = ({ raffleId }: { raffleId: string }) => {
 
   return (
     <div className="flex flex-col p-4">
+      {ticketData && <DataTable columns={columns} data={ticketData.tickets} />}
       {ticketData && (
-        <div className="flex flex-col text-right justify-end">
-          <p>Tickets Sold: {ticketData.ticketSums.totalAmount}</p>
-          <p>Total Raised: ${ticketData.ticketSums.totalCost}</p>
+        <div className="flex text-right justify-end m-1 gap-1">
+          <Badge
+            variant="outline"
+            className="flex justify-center w-[140px] text-center"
+          >
+            Tickets Sold: {ticketData.ticketSums.totalAmount}
+          </Badge>
+          <Badge
+            variant="outline"
+            className="flex justify-center w-[140px] text-center"
+          >
+            Total Raised: ${ticketData.ticketSums.totalCost}
+          </Badge>
         </div>
       )}
-      {ticketData && <DataTable columns={columns} data={ticketData.tickets} />}
     </div>
   );
 };

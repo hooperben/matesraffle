@@ -73,27 +73,6 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
         <h1 className="text-3xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
           Mates Ball
         </h1>
-        {userRaffleData && (
-          <div className="flex gap-2">
-            {userRaffleData?.isRaffleAdmin && (
-              <Button
-                onClick={() => handleButton("teammate")}
-                className="text-xs"
-              >
-                Add Teammate
-              </Button>
-            )}
-
-            {userRaffleData?.isRaffleSalesPerson && (
-              <Button
-                onClick={() => handleButton("ticket")}
-                className="text-xs"
-              >
-                Sell Ticket
-              </Button>
-            )}
-          </div>
-        )}
       </div>
 
       {addingTeammate && (
@@ -112,9 +91,13 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
 
       {!addingTeammate && !sellingTicket && (
         <Tabs
-          defaultValue={localStorage.getItem("selectedTab") || "account"}
+          defaultValue={
+            (localStorage && localStorage.getItem("selectedTab")) || "account"
+          }
           className="w-full"
-          onValueChange={(value) => localStorage.setItem("selectedTab", value)}
+          onValueChange={(value) =>
+            localStorage && localStorage.setItem("selectedTab", value)
+          }
         >
           <div>
             {ticketData ? (
@@ -134,6 +117,27 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           </TabsContent>
 
           <TabsContent value="password">
+            {userRaffleData && (
+              <div className="flex justify-end gap-1 px-4">
+                {userRaffleData?.isRaffleAdmin && (
+                  <Button
+                    onClick={() => handleButton("teammate")}
+                    className="text-xs w-[100px]"
+                  >
+                    Add Teammate
+                  </Button>
+                )}
+
+                {userRaffleData?.isRaffleSalesPerson && (
+                  <Button
+                    onClick={() => handleButton("ticket")}
+                    className="text-xs w-[100px]"
+                  >
+                    Sell Ticket
+                  </Button>
+                )}
+              </div>
+            )}
             <TicketTable raffleId={pubKey} />
           </TabsContent>
 

@@ -44,7 +44,7 @@ const AddTeammate = ({
     <div className="flex flex-col gap-3 mt-4 items-center w-full">
       <div className="flex flex-col justify-center max-w-[500px]">
         <h1 className="text-xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
-          Add Team Mate
+          Add Teammate
         </h1>
 
         <p className="text-sm text-gray-700">
