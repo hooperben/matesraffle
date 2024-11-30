@@ -146,7 +146,7 @@ export function DataTable<TData, TValue>({
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => rowClicked(row.id)}
+                    // onClick={() => rowClicked(row)}
                     className="ml-2 p-1  rounded"
                   >
                     <TrashIcon className="text-xs" />
