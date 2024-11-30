@@ -58,6 +58,7 @@ export async function GET(request: Request) {
     }
 
     const tickets = await Ticket.find({ raffleId: raffle._id })
+      .sort({ createdAt: -1 })
       .limit(20)
       .populate("userId soldBy");
 
