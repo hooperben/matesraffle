@@ -1,37 +1,8 @@
 "use client";
 
-// import Marquee from "@/components/ui/marquee";
-// import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import ShimmerButton from "./ui/shimmer-button";
 import { useRouter } from "next/navigation";
-// import { raffles } from "@/app/constants/launch-raffles";
-
-// const RaffleCard = ({ id, name }: { id: string; name: string }) => {
-//   const router = useRouter();
-
-//   return (
-//     <figure
-//       className={cn(
-//         "relative cursor-pointer overflow-auto rounded-xl border p-4",
-//         // light styles
-//         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-//         // dark styles
-//         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
-//       )}
-//       onClick={() => router.push(`/raffles/${id}`)}
-//     >
-//       <div className="flex flex-row items-center gap-2">
-//         <div className="flex flex-col">
-//           <figcaption className="text-sm font-medium dark:text-white">
-//             {name}
-//           </figcaption>
-//           <p className="text-xs font-medium dark:text-white/40">{name}</p>
-//         </div>
-//       </div>
-//     </figure>
-//   );
-// };
 
 const ViewRaffles = () => {
   const router = useRouter();
