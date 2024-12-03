@@ -1,32 +1,14 @@
 // import Image from "next/image";
+import { BoardItem, boardItems } from "@/app/constants/mates-ball-prizes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-interface BoardItem {
-  provider: string;
-  description: string;
-  prizes: string[];
-  // imageUrl: string
-}
-
-const prizes = [
-  {
-    provider: "Go To Skinare",
-    description:
-      "Go-To Skincare offers a range of effective, easy to use products designed for all skin types.",
-    prizes: ["1 x Go-to Skin Care Set", "1 x Bro-to Skin Care Set"],
-  },
-];
 
 function BoardItemCard({ item }: { item: BoardItem }) {
   return (
     <Card className="flex flex-col max-h-[300px] w-full">
       <CardHeader>
-        <CardTitle>{item.provider}</CardTitle>
+        <CardTitle>{item.sponsorName}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col flex-grow">
-        {/* <div className="flex justify-center mb-4">
-           <ImageWrapper imageUrl={item.imageUrl} /> 
-        </div> */}
         <p className="text-muted-foreground mb-2">{item.description}</p>
         <ul className="list-disc list-inside">
           {item.prizes.map((point, index) => (
@@ -41,9 +23,9 @@ function BoardItemCard({ item }: { item: BoardItem }) {
 export default function SponsorCard() {
   return (
     <div className="container p-4 w-full">
-      <div className="flex flex-wrap gap-6r">
-        {prizes.map((item) => (
-          <BoardItemCard key={item.provider} item={item} />
+      <div className="flex flex-wrap gap-2">
+        {boardItems.map((item) => (
+          <BoardItemCard key={item.sponsorName} item={item} />
         ))}
       </div>
     </div>
