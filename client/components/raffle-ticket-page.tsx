@@ -26,7 +26,7 @@ const RaffleTicketPage = () => {
       <div className="flex flex-col p-4">
         <h1>Purchase Tickets</h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {Object.entries(RAFFLE_AMOUNT_TO_ID).map(([amount, id]) => (
           <div
             key={id}
@@ -35,14 +35,11 @@ const RaffleTicketPage = () => {
             <Image
               src={`/ticket-logos/mb-${amount}.svg`}
               alt={`${amount} Tickets`}
-              className="w-32 h-32 mb-4"
+              className="w-32 h-32 mb-4 rounded"
               width={32}
               height={32}
             />
-            <Button
-              className="w-full px-4 py- rounded"
-              onClick={() => handleOnClick(id)}
-            >
+            <Button className="px-4  rounded" onClick={() => handleOnClick(id)}>
               Buy {amount} Tickets
             </Button>
           </div>
