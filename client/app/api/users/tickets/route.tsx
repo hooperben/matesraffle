@@ -9,6 +9,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const raffleId = searchParams.get("raffleId");
 
+  if (!raffleId) {
+    return NextResponse.json({ message: "Invalid Auth" }, { status: 400 });
+  }
+
   const authHeader = request.headers.get("Authorization");
   const dynamicJwtToken = authHeader ? authHeader.replace("Bearer ", "") : null;
 
@@ -27,7 +31,10 @@ export async function GET(request: Request) {
     }
 
     const raffleRecord = await Raffle.findOne({
-      rafflePubKey: raffleId,
+      $or: [
+        { rafflePubKey: raffleId },
+        { name: new RegExp(`^${raffleId.replace("-", " ")}$`, "i") },
+      ],
     });
 
     if (!raffleRecord) {
