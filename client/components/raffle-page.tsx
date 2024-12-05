@@ -117,7 +117,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           </TabsContent>
 
           <TabsContent value="tickets">
-            <RaffleTicketPage />
+            <RaffleTicketPage pubKey={pubKey} />
           </TabsContent>
 
           <TabsContent value="management">
