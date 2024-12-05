@@ -165,8 +165,9 @@ export const matesBallPrizes: BoardItem[] = [
   },
   {
     sponsorName: "Go To Skincare",
-    description:
-      "Go-To Skincare offers a range of effective, easy to use products designed for all skin types.",
+    // description:
+    //   "Go-To Skincare offers a range of effective, easy to use products designed for all skin types.",
+    description: "",
     prizes: ["1 x Go-to Skin Care Set", "1 x Bro-to Skin Care Set"],
     instagram: "@gotoskincare",
   },

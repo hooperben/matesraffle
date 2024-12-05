@@ -70,7 +70,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
         {/* {isLoadingUserRaffleData && <Skeleton className="w-[200px] h-[40px]" />} */}
       </div>
 
-      <div className="flex flex-row w-full justify-between">
+      <div className="flex flex-row w-full justify-between px-4">
         <h1 className="text-3xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
           Mates Ball
         </h1>
@@ -101,7 +101,7 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           }
         >
           <div>
-            <TabsList className="mt-2 ml-5">
+            <TabsList className="mt-2 ml-4">
               <TabsTrigger value="prizes">Prizes</TabsTrigger>
               <TabsTrigger value="tickets">Tickets</TabsTrigger>
               {userRaffleData &&
