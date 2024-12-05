@@ -37,7 +37,12 @@ export async function POST(request: Request) {
     }
 
     const raffle = await Raffle.findOne(
-      { rafflePubKey: raffleId },
+      {
+        $or: [
+          { rafflePubKey: raffleId },
+          { name: new RegExp(`^${raffleId.replace("-", " ")}$`, "i") },
+        ],
+      },
       { _id: 1, name: 1, rafflePubKey: 1, createdAt: 1, updatedAt: 1 },
     );
 
