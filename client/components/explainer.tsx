@@ -141,7 +141,7 @@ const Explainer = () => {
             </li>
             <li>
               If the raffle organiser wants to cheat, they have to find a hash
-              collision of 5 separate input fields, as they are still bound by
+              collision of 4 separate input fields, as they are still bound by
               hash function properties.
             </li>
           </ul>
