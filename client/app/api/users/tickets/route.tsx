@@ -13,6 +13,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "Invalid Auth" }, { status: 400 });
   }
 
+  await connect();
+
   const authHeader = request.headers.get("Authorization");
   const dynamicJwtToken = authHeader ? authHeader.replace("Bearer ", "") : null;
 
