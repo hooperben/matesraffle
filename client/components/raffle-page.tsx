@@ -12,6 +12,7 @@ import { useTicketDetails } from "@/hooks/use-ticket-details";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import SponsorCard from "./sponsor-card";
+import RaffleTicketPage from "./raffle-ticket-page";
 
 const RafflePage = ({ pubKey }: { pubKey: string }) => {
   const { user } = useDynamicContext();
@@ -102,9 +103,12 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           <div>
             <TabsList className="mt-2 ml-5">
               <TabsTrigger value="prizes">Prizes</TabsTrigger>
-              <TabsTrigger value="tickets" disabled={!ticketData}>
-                Tickets
-              </TabsTrigger>
+              <TabsTrigger value="tickets">Tickets</TabsTrigger>
+              {userRaffleData &&
+                (userRaffleData.isRaffleAdmin ||
+                  userRaffleData.isRaffleSalesPerson) && (
+                  <TabsTrigger value="management">Manage</TabsTrigger>
+                )}
             </TabsList>
           </div>
 
@@ -113,6 +117,10 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
           </TabsContent>
 
           <TabsContent value="tickets">
+            <RaffleTicketPage />
+          </TabsContent>
+
+          <TabsContent value="management">
             {userRaffleData && (
               <div className="flex justify-end gap-1 px-4">
                 {userRaffleData?.isRaffleAdmin && (
