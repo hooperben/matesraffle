@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { DynamicWidget, useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { useUserRaffleTickets } from "@/hooks/use-user-raffle-tickets";
@@ -90,10 +90,13 @@ const RaffleTicketPage = ({ pubKey }: { pubKey: string }) => {
       <div className="flex flex-col gap-4 p-4 mt-2">
         <h1 className="font-bold text-xl">Your Tickets</h1>
         {!user && (
-          <p>
-            Log in with your email you purchased your tickets with to view your
-            tickets
-          </p>
+          <div className="flex flex-col">
+            <p className="mb-2">
+              Log in with your email you purchased your tickets with to view
+              your tickets
+            </p>
+            <DynamicWidget />
+          </div>
         )}
 
         <Tickets
