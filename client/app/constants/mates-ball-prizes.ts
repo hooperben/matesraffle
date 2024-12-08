@@ -3,10 +3,18 @@ export interface BoardItem {
   description: string;
   prizes: `${number} x ${string}`[];
   instagram: `@${string}`;
+  hideInsta?: boolean;
   // imageUrl: string
 }
 
 export const matesBallPrizes: BoardItem[] = [
+  {
+    sponsorName: "Illuminair",
+    description: "",
+    prizes: ["1 x Set of Beechwood and Boar bristle hairbrushes"],
+    instagram: "@Illuminair",
+    hideInsta: true,
+  },
   {
     sponsorName: "Suit Society",
     description: "",
@@ -22,7 +30,7 @@ export const matesBallPrizes: BoardItem[] = [
   {
     sponsorName: "RLW Apparel",
     description: "",
-    prizes: ["2 x RLW Apparel Shirts"],
+    prizes: ["1 x RLW Apparel Shirt", "1 x RLW Apparel Shirt"],
     instagram: "@rlwapparel",
   },
   {
@@ -98,7 +106,10 @@ export const matesBallPrizes: BoardItem[] = [
   {
     sponsorName: "Urban Climb Milton",
     description: "",
-    prizes: ["2 x Rope Gym Passes (2 Adults + Gear Hire)"],
+    prizes: [
+      "1 x Rope Gym Passes (2 Adults + Gear Hire)",
+      "1 x Rope Gym Passes (2 Adults + Gear Hire)",
+    ],
     instagram: "@urbanclimb",
   },
   {
