@@ -33,7 +33,7 @@ const Diagram = () => {
           delay={13}
           radius={80}
         >
-          <Image src="/chronicle.png" alt="LINK" height={35} width={35} />
+          ?
         </OrbitingCircles>
 
         <OrbitingCircles
