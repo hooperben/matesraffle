@@ -45,7 +45,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex justify-between w-full mb-4">
-            <div className="text-xl font-bold text-[#800080] hover:text-[#9400D3] active:text-[#4B0082] from-35% to-[#000000]">
+            <div className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-br from-[#800080] from-35% to-[#595959] bg-clip-text text-xl font-bold leading-normal tracking-tighter text-transparent dark:drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
               matesraffle.com
             </div>
             <ModeToggle />
