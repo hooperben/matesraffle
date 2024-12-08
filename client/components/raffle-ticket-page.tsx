@@ -67,7 +67,13 @@ const RaffleTicketPage = ({ pubKey }: { pubKey: string }) => {
     <div className="flex flex-col">
       <div className="flex flex-col p-4">
         <h1 className="font-bold text-xl">Purchase Tickets</h1>
+        {new Date() > new Date("2024-12-08T20:00:00+10:00") && (
+          <div>
+            <p>This raffle has closed! Winners will be shown shortly.</p>
+          </div>
+        )}
       </div>
+
       <div className="flex flex-wrap justify-center gap-4">
         {Object.entries(RAFFLE_AMOUNT_TO_ID).map(([amount, id]) => (
           <div
