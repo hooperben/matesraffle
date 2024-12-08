@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
@@ -50,6 +51,8 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.60.1",
+    "@types/jest": "^29.5.14",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
