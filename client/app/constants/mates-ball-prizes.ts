@@ -192,7 +192,7 @@ export const matesBallPrizes: BoardItem[] = [
     description: "",
     prizes: ["1 x Adopt an Animal Package"],
     instagram: "@australiazoo",
-    winners: ["Dulan Dunn"],
+    winners: ["Dylan Dunn"],
   },
   {
     sponsorName: "Officer's Mess",

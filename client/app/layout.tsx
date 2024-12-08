@@ -7,6 +7,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import DynamicProvider from "@/lib/providers/dynamic";
+import { AnalyticsProvider } from "@/lib/providers/analytics";
 
 export const metadata: Metadata = {
   title: "MatesRaffle",
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <AnalyticsProvider />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
