@@ -81,7 +81,11 @@ const RaffleTicketPage = ({ pubKey }: { pubKey: string }) => {
               width={32}
               height={32}
             />
-            <Button className="px-4  rounded" onClick={() => handleOnClick(id)}>
+            <Button
+              className="px-4 rounded"
+              onClick={() => handleOnClick(id)}
+              disabled={new Date() > new Date("2024-12-08T20:00:00+10:00")}
+            >
               Buy {amount} Tickets
             </Button>
           </div>
