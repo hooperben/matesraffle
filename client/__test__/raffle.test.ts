@@ -17,9 +17,10 @@ describe("Getting Truflation Data", () => {
       Array(ticket.amount).fill(ticket.userId.firstName),
     );
 
-    // TODO get the real one
+    // our final randomness generation:
+    // https://basescan.org/tx/0x261d28c33d6165586b75f0f04d008ba31f6e1a76d1f7a7753421070f4082730f
     const randomValue =
-      "0x5fec80b1036f0ae7934869d4fffedc3ebd3c99d94294f500ead6bd7a03e2c2c1";
+      "0x7c0389705b36c57579ff023d8d7c543cde56d664e57f4a5d7e04e98ebc336dc0";
 
     console.log(`Sold ${populatedTickets.length} tickets.`);
     console.log(`Our random number generated was: ${randomValue} `);
@@ -33,9 +34,28 @@ describe("Getting Truflation Data", () => {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
 
-    // Take first 10 items
-    console.log(shuffled.length);
+    const allPrizes = matesBallPrizes.flatMap((prize) => prize.prizes);
 
-    console.log(matesBallPrizes);
+    const matesBallPrizesWithWinners = [];
+
+    console.log("all prizes length: ", allPrizes.length);
+
+    for (let i = 0; i < allPrizes.length; i++) {
+      const currentPrizeSponsor = matesBallPrizes.find((prize) =>
+        prize.prizes.includes(allPrizes[i]),
+      );
+      console.log(
+        `${shuffled[i].userId.firstName} won ${allPrizes[i]} from ${currentPrizeSponsor?.sponsorName}`,
+      );
+
+      matesBallPrizesWithWinners.push({
+        winnerId: shuffled[i].userId._id,
+        winner: shuffled[i].userId.firstName,
+        prize: allPrizes[i],
+        sponsor: currentPrizeSponsor?.sponsorName,
+      });
+    }
+
+    console.log(matesBallPrizesWithWinners);
   });
 });

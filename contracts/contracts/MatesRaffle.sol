@@ -22,7 +22,7 @@ contract MatesRaffle is
         address manager;
         uint64 pythRequestId;
         bytes32 chainLinkRandomRequestId;
-        bytes32 reveal;
+        bytes reveal;
         bool open;
         uint256 ticketsSold;
         uint64 prizes;
@@ -85,7 +85,7 @@ contract MatesRaffle is
             manager: msg.sender,
             pythRequestId: 0,
             chainLinkRandomRequestId: bytes32(0),
-            reveal: bytes32(0),
+            reveal: new bytes(0),
             open: _raffleOpen,
             ticketsSold: 0,
             prizes: _rafflePrizes
@@ -127,19 +127,19 @@ contract MatesRaffle is
         uint256 indexed _finalRandom
     );
 
-    function settleRaffle(bytes32 commitReveal) external {
-        bytes32 reconstructed = keccak256(abi.encodePacked(commitReveal));
+    function settleRaffle(bytes calldata secret) external {
+        bytes32 reconstructed = keccak256(secret);
         Raffle memory raffle = raffles[reconstructed];
         require(
             raffle.manager != address(0),
             "Reconstructed Raffle Doesn't exist"
         );
 
-        raffle.reveal = commitReveal;
+        raffle.reveal = secret;
 
         emit RandomNessReveal(
             reconstructed,
-            uint256(_getRandomness(commitReveal, raffle))
+            uint256(_getRandomness(reconstructed, raffle))
         );
     }
 
@@ -148,10 +148,10 @@ contract MatesRaffle is
     ) external view returns (uint256) {
         Raffle memory raffle = raffles[_pubKey];
 
-        if (raffle.reveal == bytes32(0)) {
+        if (raffle.reveal.length == 0) {
             return 0;
         }
 
-        return uint256(_getRandomness(_pubKey, raffle));
+        return uint256(uint256(_getRandomness(_pubKey, raffle)));
     }
 }

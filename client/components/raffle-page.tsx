@@ -90,6 +90,25 @@ const RafflePage = ({ pubKey }: { pubKey: string }) => {
         />
       )}
 
+      <div className="flex flex-col gap-2 p-4">
+        <p className="max-w-full">
+          This raffle has finished! The random value was determined{" "}
+          <a
+            href="https://basescan.org/tx/0x261d28c33d6165586b75f0f04d008ba31f6e1a76d1f7a7753421070f4082730f"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700 underline"
+          >
+            here
+          </a>
+          , and is{" "}
+          <span className="break-all">
+            56093042333888854496960980005796909012463336905912674227018052980723384806848.
+          </span>
+        </p>
+        <p>Winners will be contacted for delivery of prizes shortly!</p>
+      </div>
+
       {!addingTeammate && !sellingTicket && (
         <Tabs
           defaultValue={

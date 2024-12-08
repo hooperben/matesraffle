@@ -10,14 +10,18 @@ function BoardItemCard({ item }: { item: BoardItem }) {
     <Card className="flex flex-col max-h-[300px] w-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex-grow">{item.sponsorName}</CardTitle>
-        <InstagramButton handle={item.instagram} />
+        {!item.hideInsta && <InstagramButton handle={item.instagram} />}
       </CardHeader>
       <CardContent className="flex flex-col flex-grow justify-between">
         <div>
-          <p className="text-muted-foreground mb-2">{item.description}</p>
           <ul className="list-disc list-inside">
             {item.prizes.map((point, index) => (
-              <li key={index}>{point}</li>
+              <li key={index}>
+                {point}{" "}
+                <span className="font-bold">
+                  was won by {item.winners[index]}
+                </span>
+              </li>
             ))}
           </ul>
         </div>
