@@ -69,7 +69,7 @@ const RaffleTicketPage = ({ pubKey }: { pubKey: string }) => {
         <h1 className="font-bold text-xl">Purchase Tickets</h1>
         {new Date() > new Date("2024-12-08T20:00:00+10:00") && (
           <div>
-            <p>This raffle has closed! Winners will be shown shortly.</p>
+            <p>This raffle has closed.</p>
           </div>
         )}
       </div>
