@@ -204,8 +204,16 @@ export const matesBallPrizes: BoardItem[] = [
   {
     sponsorName: "Go To Skincare",
     description: "",
-    prizes: ["1 x Go-to Skin Care Set", "1 x Bro-to Skin Care Set"],
+    prizes: ["1 x Bro-to Skin Care Set"],
     instagram: "@gotoskincare",
-    winners: ["Terry Mallon", "Shane Elphick"],
+    winners: ["Shane Elphick"],
+  },
+  {
+    sponsorName: "Mates Ball Commitee",
+    description: "",
+    prizes: ["1 x 11L Domestic Esky"],
+    instagram: "@",
+    hideInsta: true,
+    winners: ["Max Siemon"],
   },
 ];
