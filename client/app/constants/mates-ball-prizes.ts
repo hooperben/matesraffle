@@ -211,7 +211,7 @@ export const matesBallPrizes: BoardItem[] = [
   {
     sponsorName: "Mates Ball Commitee",
     description: "",
-    prizes: ["1 x 11L Domestic Esky"],
+    prizes: ["1 x 111L Domestic Esky"],
     instagram: "@",
     hideInsta: true,
     winners: ["Max Siemon"],
